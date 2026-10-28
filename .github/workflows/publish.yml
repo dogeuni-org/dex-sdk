@@ -1,0 +1,77 @@
+# 在公开镜像仓库 dogeuni-org/dex-sdk 里生效（本文件在 DogeUni Trade 的 packages/dex-sdk 下，同步后位于镜像根目录）。
+# v* tag 触发：测试 → 等 `npm` environment 审批 → npm pack 一次 → 带 provenance 发布这个 tarball → 核对 npm 上的
+# integrity 与本地一致 → 同一个 tarball 和 SHA256SUMS 挂到 GitHub Release。一次性设置见 RELEASING.md。
+name: Publish
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        node: [22, 24] # 测试直接跑 .ts 源码，要 Node 22.18+ 的类型擦除
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: write # GitHub Release
+      id-token: write # npm trusted publishing 与 provenance（OIDC）
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      # trusted publishing 要 npm 11.5.1+
+      - run: npm install -g npm@11.21.1
+      - name: tag 与 package.json 版本一致
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          test "v$VERSION" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME, package.json $VERSION"; exit 1; }
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+      # 带发布凭证的 job 不跑依赖的安装脚本
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: 只打包一次，npm 与 Release 用同一个文件
+        run: |
+          npm pack
+          sha256sum "dogeuni-dex-sdk-$VERSION.tgz" > SHA256SUMS
+          cat SHA256SUMS
+      # --provenance：没有 attestation 就发布失败，而不是不带它发出去。NODE_AUTH_TOKEN 只用于首发，见 RELEASING.md。
+      - run: npm publish "dogeuni-dex-sdk-$VERSION.tgz" --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: npm 上的 tarball 就是刚打的这个
+        run: |
+          LOCAL=$(node -e "const c=require('crypto');console.log('sha512-'+c.createHash('sha512').update(require('fs').readFileSync(process.argv[1])).digest('base64'))" "dogeuni-dex-sdk-$VERSION.tgz")
+          # 新包要几分钟才查得到：最多等 10 分钟
+          for i in $(seq 60); do
+            REMOTE=$(npm view "dogeuni-dex-sdk@$VERSION" dist.integrity 2>/dev/null || true)
+            [ -n "$REMOTE" ] && break
+            sleep 10
+          done
+          test "$LOCAL" = "$REMOTE" || { echo "local $LOCAL, npm $REMOTE"; exit 1; }
+      - name: GitHub Release 挂同一个 tarball
+        run: |
+          gh release create "$GITHUB_REF_NAME" "dogeuni-dex-sdk-$VERSION.tgz" SHA256SUMS --verify-tag \
+            --title "dogeuni-dex-sdk $VERSION" \
+            --notes "npm: https://www.npmjs.com/package/dogeuni-dex-sdk/v/$VERSION · 校验方法见 README"
+        env:
+          GH_TOKEN: ${{ github.token }}
