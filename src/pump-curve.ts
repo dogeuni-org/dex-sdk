@@ -8,8 +8,18 @@ export const PUMP_DECIMALS = 8
 export const PUMP_TOTAL_SUPPLY = '100000000000000000'
 /** 曲线 WDOGE 侧虚拟储备 3000 DOGE（DogeInit），pump_liquidity.amt1 含此部分 */
 export const PUMP_VIRTUAL_WDOGE = '300000000000'
-/** 真实 WDOGE ≥ 100,000 DOGE 毕业（DogeMax） */
+/** 真实 WDOGE ≥ 100,000 DOGE 毕业（storage/pump.go 的 DogeMax） */
 export const PUMP_GRADUATION_WDOGE = '10000000000000'
+/**
+ * 成交前 amt1（含虚拟储备）≥ 33,000 DOGE 即拒绝 trade，买卖都拒（explorer/verifys.go 的 DogeMax，与 storage 的同名常量不是一个值）。
+ * 毕业线 2025-04 从真实 30,000 提到 100,000 时这条没跟着改，所以 amt1 落在 [33,000, 103,000) 的曲线既不能交易也不毕业
+ */
+export const PUMP_TRADE_STOP_AMT1 = '3300000000000'
+/**
+ * 平台费单独转账，为 0 时整笔失败；交易者绑定了邀请人时还要再转 floor(平台费 ÷ 2) 给邀请人，也不能为 0。
+ * 按 2 要求即两种情况都成交（只挡掉 < 200 sats 的尘埃交易）
+ */
+export const PUMP_MIN_TRADE_FEE = '2'
 /** 真实 WDOGE ≥ 10,000 DOGE 成为 king（DogeKingMax） */
 export const PUMP_KING_WDOGE = '1000000000000'
 /** 每笔小费 0.1 DOGE（PumpTipFee），deploy 另收创建费 5 DOGE（PumpCreateFee） */
@@ -107,9 +117,19 @@ export function pumpProgressPercent(amt1: string): string {
   return `${s.slice(0, -1) || '0'}.${s.slice(-1)}`
 }
 
-/** indexer 在 amt1（含虚拟储备）≥ 100,000 DOGE 时拒绝 trade（explorer/verifys.go:1403） */
+/** 曲线还能不能交易：成交前 amt1（含虚拟储备）< 33,000 DOGE（PUMP_TRADE_STOP_AMT1） */
 export function isPumpTradingOpen(amt1: string): boolean {
-  return big(amt1) < big(PUMP_GRADUATION_WDOGE)
+  return big(amt1) < big(PUMP_TRADE_STOP_AMT1)
+}
+
+/** 成交后的 amt1 会让曲线卡住：停止交易但没到毕业线（真实 WDOGE < 100,000 DOGE），之后谁也不能再交易 */
+export function isPumpStuck(amt1: string): boolean {
+  return !isPumpTradingOpen(amt1) && big(pumpRealWdoge(amt1)) < big(PUMP_GRADUATION_WDOGE)
+}
+
+/** 平台费够不够转账（见 PUMP_MIN_TRADE_FEE）；不够时链上整笔失败 */
+export function isPumpFeePayable(quote: Pick<PumpQuote, 'fee'>): boolean {
+  return big(quote.fee) >= big(PUMP_MIN_TRADE_FEE)
 }
 
 /** 现价：每枚代币多少 WDOGE（两侧同为 8 位精度，储备比即价格）；仅展示 */

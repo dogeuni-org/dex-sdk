@@ -1,0 +1,1381 @@
+{
+  "version": 1,
+  "about": {
+    "purpose": "钱包审批解码（parse → TradeIntent）与 amt1_min 复核（quoteExactIn / checkMinOut）的对照向量，payload 由 DogeUni Trade 的提交路径按 snapshot 里的线上池子生成",
+    "amounts": "金额字段：payload / intent / quotedPool / walletPool / review 为最小单位整数串；dapp 为十进制串（Trade 确认弹窗显示的值，弹窗另加千分位）",
+    "vectors": "payload 原样传给 parse 应得到 intent（deepEqual）；swap 类另按 walletPool 复核：quoteExactIn(walletPool, intent.tickIn, intent.amountIn) = review.quote，checkMinOut(...) = review.minOutOk",
+    "quotedPool": "Trade 报价时的池子（toAmount / minimumReceived 由它算出）；walletPool 是钱包审批时取到的池子，除 review-* 向量外两者相同",
+    "dapp": "Trade 确认弹窗的显示值：swap 的 minimumReceived ↔ intent.minOut、lpFee ↔ intent.lpFee、serviceFeeDoge ↔ intent.serviceFee（null = 不收），换算按两侧链上精度",
+    "invalid": "parse 必须抛出 error 指名的错误类（UnknownPayloadError / InvalidPayloadError），钱包应拒签",
+    "snapshot": "生成时的线上数据（只读拉取）：indexedHeight 为当时的索引高度；remove 向量的持仓 LP 是构造值"
+  },
+  "snapshot": {
+    "source": "https://dex-api.dogeuni.com",
+    "indexedHeight": 6435614,
+    "blockHash": "11be7ac7ff8d0616f78b6d4251cf43e1ead4b6fcd747917982797035011406be",
+    "fetchedAt": "2026-10-29T16:17:41.537Z",
+    "drc20Pools": [
+      {
+        "tick": "CARDI-SWAP-WDOGE(WRAPPED-DOGE)",
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593",
+        "liquidity_total": "7642177892540"
+      },
+      {
+        "tick": "CARDI-SWAP-KEK",
+        "tick0": "CARDI",
+        "tick1": "KEK",
+        "amt0": "74328714861",
+        "amt1": "830649704126114458",
+        "liquidity_total": "243496937606662"
+      },
+      {
+        "tick": "WDOGE(WRAPPED-DOGE)-SWAP-WOW",
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WOW",
+        "amt0": "397266903584",
+        "amt1": "342432418945821",
+        "liquidity_total": "10313237086565"
+      }
+    ],
+    "meme20Pools": [
+      {
+        "pair_id": "ac3fa45162ae5594efbf172831aba0f99fc291eda8365a4facd6541d2526a2b5",
+        "tick0_id": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tick0": "dpp",
+        "tick1_id": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "32304885621155539",
+        "amt1": "2614355932783",
+        "liquidity_total": "261420986773184"
+      },
+      {
+        "pair_id": "e43c36ab5773ce46cc9eab5ee340275dd732381e7e05b1d61a3d7138277b23cc",
+        "tick0_id": "741fa6b8d6da6fce63a978294890bae74cf036717a9111ef8ec4ce6c518a04c0",
+        "tick0": "WOOFI",
+        "tick1_id": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "52125311905616098",
+        "amt1": "564954326317",
+        "liquidity_total": "167968600194495"
+      }
+    ],
+    "meme20Tokens": [
+      {
+        "tick_id": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tick": "dpp",
+        "name": "Doge Pump",
+        "dec_": "8"
+      },
+      {
+        "tick_id": "741fa6b8d6da6fce63a978294890bae74cf036717a9111ef8ec4ce6c518a04c0",
+        "tick": "WOOFI",
+        "name": "WOOFI MEME20",
+        "dec_": "8"
+      }
+    ],
+    "pumpToken": {
+      "tick_id": "52e74eb1321d68ee5d9dd1c816c91599f4c0bd1aa52042f573f72614a55f5cd2",
+      "tick": "Cheems"
+    }
+  },
+  "vectors": [
+    {
+      "id": "swap-v1-native-doge-in",
+      "description": "pair-v1：原生 DOGE 支付（doge=1，钱包另收服务费），WDOGE 在池子 tick1 一侧",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "10000000000",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "CARDI",
+        "nameIn": "WDOGE(WRAPPED-DOGE)",
+        "nameOut": "CARDI",
+        "amountIn": "10000000000",
+        "nativeIn": true,
+        "nativeOut": false,
+        "minOut": "114958784245",
+        "quotedOut": "115536466578",
+        "lpFee": "30000000",
+        "serviceFee": "50000000"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "115536466578",
+          "fee": "30000000",
+          "priceImpactBps": 22
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "DOGE",
+        "toSymbol": "CARDI",
+        "fromAmount": "100",
+        "toAmount": "1155.36466578",
+        "minimumReceived": "1149.58784245",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.22",
+        "lpFee": "0.3",
+        "lpFeeSymbol": "DOGE",
+        "serviceFeeDoge": "0.5"
+      }
+    },
+    {
+      "id": "swap-v1-wdoge-in",
+      "description": "pair-v1：花 WDOGE（DRC-20）余额（doge=0，无服务费）",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "10000000000",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 0
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "CARDI",
+        "nameIn": "WDOGE(WRAPPED-DOGE)",
+        "nameOut": "CARDI",
+        "amountIn": "10000000000",
+        "nativeIn": false,
+        "nativeOut": false,
+        "minOut": "114958784245",
+        "quotedOut": "115536466578",
+        "lpFee": "30000000",
+        "serviceFee": "0"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "115536466578",
+          "fee": "30000000",
+          "priceImpactBps": 22
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "WDOGE(WRAPPED-DOGE)",
+        "toSymbol": "CARDI",
+        "fromAmount": "100",
+        "toAmount": "1155.36466578",
+        "minimumReceived": "1149.58784245",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.22",
+        "lpFee": "0.3",
+        "lpFeeSymbol": "WDOGE(WRAPPED-DOGE)",
+        "serviceFeeDoge": null
+      }
+    },
+    {
+      "id": "swap-v1-native-doge-out",
+      "description": "pair-v1：卖出收原生 DOGE（tick1=WDOGE + doge=1，不收费）",
+      "payload": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "100000000000",
+        "amt1": "8568997156",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "8483307184",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "CARDI",
+        "tickOut": "WDOGE(WRAPPED-DOGE)",
+        "nameIn": "CARDI",
+        "nameOut": "WDOGE(WRAPPED-DOGE)",
+        "amountIn": "100000000000",
+        "nativeIn": false,
+        "nativeOut": true,
+        "minOut": "8483307184",
+        "quotedOut": "8568997156",
+        "lpFee": "300000000",
+        "serviceFee": "0"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "8568997156",
+          "fee": "300000000",
+          "priceImpactBps": 19
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "CARDI",
+        "toSymbol": "DOGE",
+        "fromAmount": "1000",
+        "toAmount": "85.68997156",
+        "minimumReceived": "84.83307184",
+        "slippagePercent": 1,
+        "priceImpactPercent": "0.19",
+        "lpFee": "3",
+        "lpFeeSymbol": "CARDI",
+        "serviceFeeDoge": null
+      }
+    },
+    {
+      "id": "swap-v1-wdoge-out",
+      "description": "pair-v1：卖出收 WDOGE 余额（doge=0）",
+      "payload": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "100000000000",
+        "amt1": "8568997156",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "8526152170",
+        "doge": 0
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "CARDI",
+        "tickOut": "WDOGE(WRAPPED-DOGE)",
+        "nameIn": "CARDI",
+        "nameOut": "WDOGE(WRAPPED-DOGE)",
+        "amountIn": "100000000000",
+        "nativeIn": false,
+        "nativeOut": false,
+        "minOut": "8526152170",
+        "quotedOut": "8568997156",
+        "lpFee": "300000000",
+        "serviceFee": "0"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "8568997156",
+          "fee": "300000000",
+          "priceImpactBps": 19
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "CARDI",
+        "toSymbol": "WDOGE(WRAPPED-DOGE)",
+        "fromAmount": "1000",
+        "toAmount": "85.68997156",
+        "minimumReceived": "85.2615217",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.19",
+        "lpFee": "3",
+        "lpFeeSymbol": "CARDI",
+        "serviceFeeDoge": null
+      }
+    },
+    {
+      "id": "swap-v1-token-token",
+      "description": "pair-v1：两侧都不是 WDOGE 的池子",
+      "payload": {
+        "tick0": "CARDI",
+        "tick1": "KEK",
+        "amt0": "1000000000",
+        "amt1": "10994356396642921",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "10939384614659706",
+        "doge": 0
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "CARDI",
+        "tickOut": "KEK",
+        "nameIn": "CARDI",
+        "nameOut": "KEK",
+        "amountIn": "1000000000",
+        "nativeIn": false,
+        "nativeOut": false,
+        "minOut": "10939384614659706",
+        "quotedOut": "10994356396642921",
+        "lpFee": "3000000",
+        "serviceFee": "0"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "KEK",
+        "amt0": "74328714861",
+        "amt1": "830649704126114458"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "KEK",
+        "amt0": "74328714861",
+        "amt1": "830649704126114458"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "10994356396642921",
+          "fee": "3000000",
+          "priceImpactBps": 133
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "CARDI",
+        "toSymbol": "KEK",
+        "fromAmount": "10",
+        "toAmount": "109943563.96642921",
+        "minimumReceived": "109393846.14659706",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "1.33",
+        "lpFee": "0.03",
+        "lpFeeSymbol": "CARDI",
+        "serviceFeeDoge": null
+      }
+    },
+    {
+      "id": "swap-v1-wdoge-tick0",
+      "description": "pair-v1：WDOGE 在池子 tick0 一侧，原生 DOGE 支付",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WOW",
+        "amt0": "5000000000",
+        "amt1": "4243673164093",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "4222454798272",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "WOW",
+        "nameIn": "WDOGE(WRAPPED-DOGE)",
+        "nameOut": "WOW",
+        "amountIn": "5000000000",
+        "nativeIn": true,
+        "nativeOut": false,
+        "minOut": "4222454798272",
+        "quotedOut": "4243673164093",
+        "lpFee": "15000000",
+        "serviceFee": "50000000"
+      },
+      "quotedPool": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WOW",
+        "amt0": "397266903584",
+        "amt1": "342432418945821"
+      },
+      "walletPool": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WOW",
+        "amt0": "397266903584",
+        "amt1": "342432418945821"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "4243673164093",
+          "fee": "15000000",
+          "priceImpactBps": 124
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "DOGE",
+        "toSymbol": "WOW",
+        "fromAmount": "50",
+        "toAmount": "42436.73164093",
+        "minimumReceived": "42224.54798272",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "1.24",
+        "lpFee": "0.15",
+        "lpFeeSymbol": "DOGE",
+        "serviceFeeDoge": "0.5"
+      }
+    },
+    {
+      "id": "swap-v1-high-impact",
+      "description": "pair-v1：大额（价格影响高），滑点 5%",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "5000000000000",
+        "amt1": "27856581645163",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "26463752562904",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "CARDI",
+        "nameIn": "WDOGE(WRAPPED-DOGE)",
+        "nameOut": "CARDI",
+        "amountIn": "5000000000000",
+        "nativeIn": true,
+        "nativeOut": false,
+        "minOut": "26463752562904",
+        "quotedOut": "27856581645163",
+        "lpFee": "15000000000",
+        "serviceFee": "15000000000"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "27856581645163",
+          "fee": "15000000000",
+          "priceImpactBps": 5196
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "DOGE",
+        "toSymbol": "CARDI",
+        "fromAmount": "50000",
+        "toAmount": "278565.81645163",
+        "minimumReceived": "264637.52562904",
+        "slippagePercent": 5,
+        "priceImpactPercent": "51.96",
+        "lpFee": "150",
+        "lpFeeSymbol": "DOGE",
+        "serviceFeeDoge": "150"
+      }
+    },
+    {
+      "id": "swap-v2-native-doge-in",
+      "description": "pair-v2（MEME-20）：原生 DOGE 支付，按 pair_id 找池",
+      "payload": {
+        "tick0": "DOGE",
+        "tick1": "dpp",
+        "amt0": "10000000000",
+        "amt1": "122728547403167",
+        "p": "pair-v2",
+        "op": "swap",
+        "amt1_min": "122114904666151",
+        "tick0_id": "WDOGE(WRAPPED-DOGE)",
+        "tick1_id": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "pair_id": "ac3fa45162ae5594efbf172831aba0f99fc291eda8365a4facd6541d2526a2b5",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v2",
+        "pairId": "ac3fa45162ae5594efbf172831aba0f99fc291eda8365a4facd6541d2526a2b5",
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "nameIn": "DOGE",
+        "nameOut": "dpp",
+        "amountIn": "10000000000",
+        "nativeIn": true,
+        "nativeOut": false,
+        "minOut": "122114904666151",
+        "quotedOut": "122728547403167",
+        "lpFee": "30000000",
+        "serviceFee": "50000000"
+      },
+      "quotedPool": {
+        "tick0": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "32304885621155539",
+        "amt1": "2614355932783"
+      },
+      "walletPool": {
+        "tick0": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "32304885621155539",
+        "amt1": "2614355932783"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "122728547403167",
+          "fee": "30000000",
+          "priceImpactBps": 38
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "DOGE",
+        "toSymbol": "dpp",
+        "fromAmount": "100",
+        "toAmount": "1227285.47403167",
+        "minimumReceived": "1221149.04666151",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.38",
+        "lpFee": "0.3",
+        "lpFeeSymbol": "DOGE",
+        "serviceFeeDoge": "0.5"
+      }
+    },
+    {
+      "id": "swap-v2-native-doge-out",
+      "description": "pair-v2：卖出收原生 DOGE",
+      "payload": {
+        "tick0": "dpp",
+        "tick1": "DOGE",
+        "amt0": "100000000000000",
+        "amt1": "8043654362",
+        "p": "pair-v2",
+        "op": "swap",
+        "amt1_min": "8003436090",
+        "tick0_id": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tick1_id": "WDOGE(WRAPPED-DOGE)",
+        "pair_id": "ac3fa45162ae5594efbf172831aba0f99fc291eda8365a4facd6541d2526a2b5",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v2",
+        "pairId": "ac3fa45162ae5594efbf172831aba0f99fc291eda8365a4facd6541d2526a2b5",
+        "tickIn": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tickOut": "WDOGE(WRAPPED-DOGE)",
+        "nameIn": "dpp",
+        "nameOut": "DOGE",
+        "amountIn": "100000000000000",
+        "nativeIn": false,
+        "nativeOut": true,
+        "minOut": "8003436090",
+        "quotedOut": "8043654362",
+        "lpFee": "300000000000",
+        "serviceFee": "0"
+      },
+      "quotedPool": {
+        "tick0": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "32304885621155539",
+        "amt1": "2614355932783"
+      },
+      "walletPool": {
+        "tick0": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "32304885621155539",
+        "amt1": "2614355932783"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "8043654362",
+          "fee": "300000000000",
+          "priceImpactBps": 31
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "dpp",
+        "toSymbol": "DOGE",
+        "fromAmount": "1000000",
+        "toAmount": "80.43654362",
+        "minimumReceived": "80.0343609",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.31",
+        "lpFee": "3000",
+        "lpFeeSymbol": "dpp",
+        "serviceFeeDoge": null
+      }
+    },
+    {
+      "id": "swap-v2-wdoge-in",
+      "description": "pair-v2：花 WDOGE 余额（doge=0）",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WOOFI",
+        "amt0": "1000000000",
+        "amt1": "91825804717330",
+        "p": "pair-v2",
+        "op": "swap",
+        "amt1_min": "91366675693743",
+        "tick0_id": "WDOGE(WRAPPED-DOGE)",
+        "tick1_id": "741fa6b8d6da6fce63a978294890bae74cf036717a9111ef8ec4ce6c518a04c0",
+        "pair_id": "e43c36ab5773ce46cc9eab5ee340275dd732381e7e05b1d61a3d7138277b23cc",
+        "doge": 0
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v2",
+        "pairId": "e43c36ab5773ce46cc9eab5ee340275dd732381e7e05b1d61a3d7138277b23cc",
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "741fa6b8d6da6fce63a978294890bae74cf036717a9111ef8ec4ce6c518a04c0",
+        "nameIn": "WDOGE(WRAPPED-DOGE)",
+        "nameOut": "WOOFI",
+        "amountIn": "1000000000",
+        "nativeIn": false,
+        "nativeOut": false,
+        "minOut": "91366675693743",
+        "quotedOut": "91825804717330",
+        "lpFee": "3000000",
+        "serviceFee": "0"
+      },
+      "quotedPool": {
+        "tick0": "741fa6b8d6da6fce63a978294890bae74cf036717a9111ef8ec4ce6c518a04c0",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "52125311905616098",
+        "amt1": "564954326317"
+      },
+      "walletPool": {
+        "tick0": "741fa6b8d6da6fce63a978294890bae74cf036717a9111ef8ec4ce6c518a04c0",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "52125311905616098",
+        "amt1": "564954326317"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "91825804717330",
+          "fee": "3000000",
+          "priceImpactBps": 18
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "WDOGE(WRAPPED-DOGE)",
+        "toSymbol": "WOOFI",
+        "fromAmount": "10",
+        "toAmount": "918258.0471733",
+        "minimumReceived": "913666.75693743",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.18",
+        "lpFee": "0.03",
+        "lpFeeSymbol": "WDOGE(WRAPPED-DOGE)",
+        "serviceFeeDoge": null
+      }
+    },
+    {
+      "id": "review-pool-moved-within-slippage",
+      "description": "复核：报价后有人同方向买入 20 DOGE，储备变了但仍在 0.5% 滑点内 → minOutOk = true",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "10000000000",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "CARDI",
+        "nameIn": "WDOGE(WRAPPED-DOGE)",
+        "nameOut": "CARDI",
+        "amountIn": "10000000000",
+        "nativeIn": true,
+        "nativeOut": false,
+        "minOut": "114958784245",
+        "quotedOut": "115536466578",
+        "lpFee": "30000000",
+        "serviceFee": "50000000"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53668540473524",
+        "amt1": "4625252231593"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "115436827359",
+          "fee": "30000000",
+          "priceImpactBps": 22
+        },
+        "minOutOk": true
+      },
+      "dapp": {
+        "fromSymbol": "DOGE",
+        "toSymbol": "CARDI",
+        "fromAmount": "100",
+        "toAmount": "1155.36466578",
+        "minimumReceived": "1149.58784245",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.22",
+        "lpFee": "0.3",
+        "lpFeeSymbol": "DOGE",
+        "serviceFeeDoge": "0.5"
+      }
+    },
+    {
+      "id": "review-pool-moved-beyond-slippage",
+      "description": "复核：报价后有人同方向买入 50000 DOGE，链上会因 amt1_min 失败 → minOutOk = false（钱包应警告 / 4300）",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "10000000000",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "swap",
+        "protocol": "pair-v1",
+        "pairId": null,
+        "tickIn": "WDOGE(WRAPPED-DOGE)",
+        "tickOut": "CARDI",
+        "nameIn": "WDOGE(WRAPPED-DOGE)",
+        "nameOut": "CARDI",
+        "amountIn": "10000000000",
+        "nativeIn": true,
+        "nativeOut": false,
+        "minOut": "114958784245",
+        "quotedOut": "115536466578",
+        "lpFee": "30000000",
+        "serviceFee": "50000000"
+      },
+      "quotedPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593"
+      },
+      "walletPool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "25835105969019",
+        "amt1": "9623252231593"
+      },
+      "review": {
+        "quote": {
+          "amtOut": "26738302129",
+          "fee": "30000000",
+          "priceImpactBps": 10
+        },
+        "minOutOk": false
+      },
+      "dapp": {
+        "fromSymbol": "DOGE",
+        "toSymbol": "CARDI",
+        "fromAmount": "100",
+        "toAmount": "1155.36466578",
+        "minimumReceived": "1149.58784245",
+        "slippagePercent": 0.5,
+        "priceImpactPercent": "0.22",
+        "lpFee": "0.3",
+        "lpFeeSymbol": "DOGE",
+        "serviceFeeDoge": "0.5"
+      }
+    },
+    {
+      "id": "wdoge-deposit-min-fee",
+      "description": "deposit 100 DOGE：千三 = 0.3 低于最低 0.5 DOGE，服务费取 0.5",
+      "payload": {
+        "p": "wdoge",
+        "holder_address": "DFVtEsBG8EnJDcMia5a6bPZsffKMNyzcQf",
+        "op": "deposit",
+        "amt": "10000000000",
+        "fee": "50000000"
+      },
+      "intent": {
+        "kind": "wdoge",
+        "op": "deposit",
+        "amount": "10000000000",
+        "serviceFee": "50000000"
+      },
+      "dapp": {
+        "amount": "100",
+        "serviceFeeDoge": "0.5",
+        "receive": "100"
+      }
+    },
+    {
+      "id": "wdoge-deposit",
+      "description": "deposit 1000 DOGE：服务费千三 = 3 DOGE",
+      "payload": {
+        "p": "wdoge",
+        "holder_address": "DFVtEsBG8EnJDcMia5a6bPZsffKMNyzcQf",
+        "op": "deposit",
+        "amt": "100000000000",
+        "fee": "300000000"
+      },
+      "intent": {
+        "kind": "wdoge",
+        "op": "deposit",
+        "amount": "100000000000",
+        "serviceFee": "300000000"
+      },
+      "dapp": {
+        "amount": "1000",
+        "serviceFeeDoge": "3",
+        "receive": "1000"
+      }
+    },
+    {
+      "id": "wdoge-withdraw",
+      "description": "withdraw 250.12345678 WDOGE：服务费固定 0.5 DOGE（不按比例）",
+      "payload": {
+        "p": "wdoge",
+        "holder_address": "DFVtEsBG8EnJDcMia5a6bPZsffKMNyzcQf",
+        "op": "withdraw",
+        "amt": "25012345678",
+        "fee": "50000000"
+      },
+      "intent": {
+        "kind": "wdoge",
+        "op": "withdraw",
+        "amount": "25012345678",
+        "serviceFee": "50000000"
+      },
+      "dapp": {
+        "amount": "250.12345678",
+        "serviceFeeDoge": "0.5",
+        "receive": "250.12345678"
+      }
+    },
+    {
+      "id": "wdoge-deposit-telegram",
+      "description": "Telegram 钱包条目形状 { p, op, tick, amt }（同一笔 deposit）",
+      "payload": {
+        "p": "wdoge",
+        "op": "deposit",
+        "tick": "WDOGE(WRAPPED-DOGE)",
+        "amt": "100000000000"
+      },
+      "intent": {
+        "kind": "wdoge",
+        "op": "deposit",
+        "amount": "100000000000",
+        "serviceFee": "300000000"
+      },
+      "dapp": {
+        "amount": "1000",
+        "serviceFeeDoge": "3",
+        "receive": "1000"
+      }
+    },
+    {
+      "id": "add-native-doge",
+      "description": "add：输入 base 一侧 1000 CARDI，WDOGE 一侧按储备比例、以原生 DOGE 存入（doge=1），滑点 0.5%",
+      "payload": {
+        "op": "add",
+        "p": "pair-v1",
+        "tick": "CARDI-SWAP-WDOGE(WRAPPED-DOGE)",
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "100000000000",
+        "amt1": "8610741135",
+        "amt0_min": "99500000000",
+        "amt1_min": "8567687429",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "add",
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amount0": "100000000000",
+        "amount1": "8610741135",
+        "min0": "99500000000",
+        "min1": "8567687429",
+        "nativeDoge": true
+      },
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593",
+        "liquidity_total": "7642177892540"
+      },
+      "dapp": {
+        "amount0": "1000",
+        "amount1": "86.10741135",
+        "min0": "995",
+        "min1": "85.67687429",
+        "slippagePercent": 0.5
+      }
+    },
+    {
+      "id": "add-token-token",
+      "description": "add：两侧都不是 WDOGE，输入 quote 一侧 1000000 KEK，滑点 1%",
+      "payload": {
+        "op": "add",
+        "p": "pair-v1",
+        "tick": "CARDI-SWAP-KEK",
+        "tick0": "CARDI",
+        "tick1": "KEK",
+        "amt0": "8948262",
+        "amt1": "100000000000000",
+        "amt0_min": "8858779",
+        "amt1_min": "99000000000000",
+        "doge": 0
+      },
+      "intent": {
+        "kind": "add",
+        "tick0": "CARDI",
+        "tick1": "KEK",
+        "amount0": "8948262",
+        "amount1": "100000000000000",
+        "min0": "8858779",
+        "min1": "99000000000000",
+        "nativeDoge": false
+      },
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "KEK",
+        "amt0": "74328714861",
+        "amt1": "830649704126114458",
+        "liquidity_total": "243496937606662"
+      },
+      "dapp": {
+        "amount0": "0.08948262",
+        "amount1": "1000000",
+        "min0": "0.08858779",
+        "min1": "990000",
+        "slippagePercent": 1
+      }
+    },
+    {
+      "id": "remove-native-doge",
+      "description": "remove 50%：WDOGE 一侧提成原生 DOGE（doge=1）；amt0 / amt1 不上链，只是 dApp 预计值",
+      "payload": {
+        "p": "pair-v1",
+        "op": "remove",
+        "holder_address": "DFVtEsBG8EnJDcMia5a6bPZsffKMNyzcQf",
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "43368549136",
+        "amt1": "3734353500",
+        "liquidity": "6172839450",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "remove",
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "liquidity": "6172839450",
+        "expected0": "43368549136",
+        "expected1": "3734353500",
+        "nativeDoge": true
+      },
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "53691687614182",
+        "amt1": "4623252231593",
+        "liquidity_total": "7642177892540"
+      },
+      "position": {
+        "lp": "12345678901",
+        "percent": 50
+      },
+      "dapp": {
+        "withdraw0": "433.68549136",
+        "withdraw1": "37.343535",
+        "liquidity": "61.7283945"
+      }
+    },
+    {
+      "id": "create-pool",
+      "description": "create：DOGI / KEK 新池（不读 min，按输入原样存入）",
+      "payload": {
+        "op": "create",
+        "p": "pair-v1",
+        "tick0": "DOGI",
+        "tick1": "KEK",
+        "amt0": "100000000000",
+        "amt1": "200000000000000",
+        "amt0_min": "100000000000",
+        "amt1_min": "200000000000000",
+        "doge": 0
+      },
+      "intent": {
+        "kind": "create",
+        "tick0": "DOGI",
+        "tick1": "KEK",
+        "amount0": "100000000000",
+        "amount1": "200000000000000",
+        "nativeDoge": false
+      },
+      "dapp": {
+        "amount0": "1000",
+        "amount1": "2000000"
+      }
+    },
+    {
+      "id": "pump-buy",
+      "description": "pump 买入 100 DOGE（原生 DOGE，amt1_min 恒为 0：链上不校验）",
+      "payload": {
+        "p": "pump",
+        "op": "trade",
+        "pair_id": "52e74eb1321d68ee5d9dd1c816c91599f4c0bd1aa52042f573f72614a55f5cd2",
+        "tick0_id": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "10000000000",
+        "amt1_min": "0",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "pump-trade",
+        "side": "buy",
+        "tickId": "52e74eb1321d68ee5d9dd1c816c91599f4c0bd1aa52042f573f72614a55f5cd2",
+        "amountIn": "10000000000",
+        "nativeIn": true,
+        "minOut": "0",
+        "platformFee": "100000000",
+        "tipFee": "10000000",
+        "serviceFee": "50000000"
+      },
+      "dapp": {
+        "amount": "100",
+        "platformFee": "1",
+        "tipFeeDoge": "0.1",
+        "serviceFeeDoge": "0.5"
+      }
+    },
+    {
+      "id": "pump-sell",
+      "description": "pump 卖出 1000000 代币（所得为 WDOGE）",
+      "payload": {
+        "p": "pump",
+        "op": "trade",
+        "pair_id": "52e74eb1321d68ee5d9dd1c816c91599f4c0bd1aa52042f573f72614a55f5cd2",
+        "tick0_id": "52e74eb1321d68ee5d9dd1c816c91599f4c0bd1aa52042f573f72614a55f5cd2",
+        "amt0": "100000000000000",
+        "amt1_min": "0",
+        "doge": 0
+      },
+      "intent": {
+        "kind": "pump-trade",
+        "side": "sell",
+        "tickId": "52e74eb1321d68ee5d9dd1c816c91599f4c0bd1aa52042f573f72614a55f5cd2",
+        "amountIn": "100000000000000",
+        "nativeIn": false,
+        "minOut": "0",
+        "platformFee": null,
+        "tipFee": "10000000",
+        "serviceFee": "0"
+      },
+      "dapp": {
+        "amount": "1000000",
+        "platformFee": null,
+        "tipFeeDoge": "0.1",
+        "serviceFeeDoge": null
+      }
+    },
+    {
+      "id": "pump-deploy-initial-buy",
+      "description": "pump 发币 + 首笔买入 100 DOGE",
+      "payload": {
+        "p": "pump",
+        "op": "deploy",
+        "tick": "WDOGE(WRAPPED-DOGE)",
+        "symbol": "VECTOR",
+        "name": "Vector Coin",
+        "logo": "",
+        "reserve": 0,
+        "amt": "10000000000",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "pump-deploy",
+        "symbol": "VECTOR",
+        "name": "Vector Coin",
+        "logo": "",
+        "reservePercent": 0,
+        "initialBuy": "10000000000",
+        "createFee": "500000000",
+        "tipFee": "10000000",
+        "platformFee": "100000000",
+        "serviceFee": "50000000"
+      },
+      "dapp": {
+        "initialBuy": "100",
+        "reservePercent": 0,
+        "createFeeDoge": "5",
+        "tipFeeDoge": "0.1",
+        "platformFee": "1",
+        "serviceFeeDoge": "0.5"
+      }
+    },
+    {
+      "id": "pump-deploy-reserve",
+      "description": "pump 发币，创建者保留 10%，不买入",
+      "payload": {
+        "p": "pump",
+        "op": "deploy",
+        "tick": "WDOGE(WRAPPED-DOGE)",
+        "symbol": "VECTOR",
+        "name": "Vector Coin",
+        "logo": "https://ipfs.dogeuni.com/ipfs/QmZQmV8jqwS1QewpLy979kZ6XsSnHZdt8pwQgD2EuNguWT",
+        "reserve": 10,
+        "amt": "0",
+        "doge": 1
+      },
+      "intent": {
+        "kind": "pump-deploy",
+        "symbol": "VECTOR",
+        "name": "Vector Coin",
+        "logo": "https://ipfs.dogeuni.com/ipfs/QmZQmV8jqwS1QewpLy979kZ6XsSnHZdt8pwQgD2EuNguWT",
+        "reservePercent": 10,
+        "initialBuy": "0",
+        "createFee": "500000000",
+        "tipFee": "10000000",
+        "platformFee": "0",
+        "serviceFee": "0"
+      },
+      "dapp": {
+        "initialBuy": "0",
+        "reservePercent": 10,
+        "createFeeDoge": "5",
+        "tipFeeDoge": "0.1",
+        "platformFee": "0",
+        "serviceFeeDoge": null
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "id": "invalid-unknown-op",
+      "description": "不认识的 p / op",
+      "payload": {
+        "p": "drc-20",
+        "op": "transfer",
+        "tick": "CARDI",
+        "amt": "100"
+      },
+      "error": "UnknownPayloadError"
+    },
+    {
+      "id": "invalid-not-object",
+      "description": "payload 不是对象",
+      "payload": [
+        {
+          "tick0": "WDOGE(WRAPPED-DOGE)",
+          "tick1": "CARDI",
+          "amt0": "10000000000",
+          "amt1": "115536466578",
+          "p": "pair-v1",
+          "op": "swap",
+          "amt1_min": "114958784245",
+          "doge": 1
+        }
+      ],
+      "error": "UnknownPayloadError"
+    },
+    {
+      "id": "invalid-amount-scientific",
+      "description": "金额是科学计数法串",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "1e10",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-amount-number",
+      "description": "金额是 number 而不是整数串",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": 10000000000,
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-amount-zero",
+      "description": "输入量为 0",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "0",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-amount-decimal",
+      "description": "金额带小数点",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "10000000000",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "1.5",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-doge-flag",
+      "description": "doge 不是 0 / 1",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "CARDI",
+        "amt0": "10000000000",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 2
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-same-token",
+      "description": "输入输出同一代币",
+      "payload": {
+        "tick0": "WDOGE(WRAPPED-DOGE)",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "10000000000",
+        "amt1": "115536466578",
+        "p": "pair-v1",
+        "op": "swap",
+        "amt1_min": "114958784245",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-v2-missing-pair-id",
+      "description": "pair-v2 缺 pair_id",
+      "payload": {
+        "tick0": "DOGE",
+        "tick1": "dpp",
+        "amt0": "10000000000",
+        "amt1": "122728547403167",
+        "p": "pair-v2",
+        "op": "swap",
+        "amt1_min": "122114904666151",
+        "tick0_id": "WDOGE(WRAPPED-DOGE)",
+        "tick1_id": "c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-wdoge-tick",
+      "description": "wdoge 条目的 tick 不是 WDOGE",
+      "payload": {
+        "p": "wdoge",
+        "op": "deposit",
+        "tick": "CARDI",
+        "amt": "100000000"
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-pump-tick0",
+      "description": "pump trade 的 tick0_id 既不是 WDOGE 也不是 pair_id",
+      "payload": {
+        "p": "pump",
+        "op": "trade",
+        "pair_id": "52e74eb1321d68ee5d9dd1c816c91599f4c0bd1aa52042f573f72614a55f5cd2",
+        "tick0_id": "CARDI",
+        "amt0": "100000000",
+        "amt1_min": "0",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    },
+    {
+      "id": "invalid-pump-deploy-reserve-and-buy",
+      "description": "pump 发币同时保留又首笔买入",
+      "payload": {
+        "p": "pump",
+        "op": "deploy",
+        "tick": "WDOGE(WRAPPED-DOGE)",
+        "symbol": "VECTOR",
+        "name": "Vector Coin",
+        "logo": "",
+        "reserve": 10,
+        "amt": "10000000000",
+        "doge": 1
+      },
+      "error": "InvalidPayloadError"
+    }
+  ]
+}

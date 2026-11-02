@@ -1,0 +1,2696 @@
+{
+  "add": [
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "entered": "base",
+      "amt0": "1",
+      "amt1": "3",
+      "amt0Min": "0",
+      "amt1Min": "2",
+      "ok": true,
+      "amt0Out": "1",
+      "amt1Out": "3"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "entered": "base",
+      "amt0": "3",
+      "amt1": "9",
+      "amt0Min": "2",
+      "amt1Min": "8",
+      "ok": true,
+      "amt0Out": "3",
+      "amt1Out": "9"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "entered": "quote",
+      "amt0": "1",
+      "amt1": "3",
+      "amt0Min": "0",
+      "amt1Min": "2",
+      "ok": true,
+      "amt0Out": "1",
+      "amt1Out": "3"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "entered": "base",
+      "amt0": "123456789",
+      "amt1": "370370367",
+      "amt0Min": "122839505",
+      "amt1Min": "368518515",
+      "ok": true,
+      "amt0Out": "123456789",
+      "amt1Out": "370370367"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "entered": "quote",
+      "amt0": "41152263",
+      "amt1": "123456789",
+      "amt0Min": "40946501",
+      "amt1Min": "122839505",
+      "ok": true,
+      "amt0Out": "41152263",
+      "amt1Out": "123456789"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "entered": "base",
+      "amt0": "100000000000",
+      "amt1": "300000000000",
+      "amt0Min": "99500000000",
+      "amt1Min": "298500000000",
+      "ok": true,
+      "amt0Out": "100000000000",
+      "amt1Out": "300000000000"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "entered": "quote",
+      "amt0": "33333333333",
+      "amt1": "100000000000",
+      "amt0Min": "33166666666",
+      "amt1Min": "99500000000",
+      "ok": true,
+      "amt0Out": "33333333333",
+      "amt1Out": "99999999999"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "entered": "base",
+      "amt0": "1",
+      "amt1": "800",
+      "amt0Min": "0",
+      "amt1Min": "796",
+      "ok": true,
+      "amt0Out": "1",
+      "amt1Out": "800"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "entered": "base",
+      "amt0": "3",
+      "amt1": "2400",
+      "amt0Min": "2",
+      "amt1Min": "2388",
+      "ok": true,
+      "amt0Out": "3",
+      "amt1Out": "2400"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "entered": "base",
+      "amt0": "123456789",
+      "amt1": "98765432100",
+      "amt0Min": "122839505",
+      "amt1Min": "98271604939",
+      "ok": true,
+      "amt0Out": "123456789",
+      "amt1Out": "98765432100"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "entered": "quote",
+      "amt0": "154320",
+      "amt1": "123456789",
+      "amt0Min": "153548",
+      "amt1Min": "122839505",
+      "ok": true,
+      "amt0Out": "154320",
+      "amt1Out": "123456001"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "entered": "base",
+      "amt0": "100000000000",
+      "amt1": "80000000729223",
+      "amt0Min": "99500000000",
+      "amt1Min": "79600000725576",
+      "ok": true,
+      "amt0Out": "100000000000",
+      "amt1Out": "80000000729223"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "entered": "quote",
+      "amt0": "124999998",
+      "amt1": "100000000000",
+      "amt0Min": "124374998",
+      "amt1Min": "99500000000",
+      "ok": true,
+      "amt0Out": "124999998",
+      "amt1Out": "99999999311"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "entered": "base",
+      "amt0": "1",
+      "amt1": "142857142857",
+      "amt0Min": "0",
+      "amt1Min": "142142857142",
+      "ok": true,
+      "amt0Out": "1",
+      "amt1Out": "142857142857"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "entered": "base",
+      "amt0": "3",
+      "amt1": "428571428571",
+      "amt0Min": "2",
+      "amt1Min": "426428571428",
+      "ok": true,
+      "amt0Out": "3",
+      "amt1Out": "428571428571"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "entered": "base",
+      "amt0": "123456789",
+      "amt1": "17636684142857142857",
+      "amt0Min": "122839505",
+      "amt1Min": "17548500722142857142",
+      "ok": true,
+      "amt0Out": "123456789",
+      "amt1Out": "17636684142857142857"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "entered": "base",
+      "amt0": "100000000000",
+      "amt1": "14285714285714285714285",
+      "amt0Min": "99500000000",
+      "amt1Min": "14214285714285714285713",
+      "ok": true,
+      "amt0Out": "100000000000",
+      "amt1Out": "14285714285714285714285"
+    }
+  ],
+  "pump": [
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "99",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "100",
+      "ok": true,
+      "fee": "1",
+      "amtOut": "32999999",
+      "reservesAfter": {
+        "amt0": "99999999967000001",
+        "amt1": "300000000099"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "100000000",
+      "ok": true,
+      "fee": "1000000",
+      "amtOut": "32989113592514",
+      "reservesAfter": {
+        "amt0": "99967010886407486",
+        "amt1": "300099000000"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "123456789012",
+      "ok": true,
+      "fee": "1234567890",
+      "amtOut": "28947368235904431",
+      "reservesAfter": {
+        "amt0": "71052631764095569",
+        "amt1": "422222221122"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "500000000000",
+      "ok": true,
+      "fee": "5000000000",
+      "amtOut": "62264150943396226",
+      "reservesAfter": {
+        "amt0": "37735849056603774",
+        "amt1": "795000000000"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "20000000",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "50000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 1"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "1000000000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 29999"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "1000000000000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 29702970"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "100000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "10000000000000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 272727272"
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "99",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "100",
+      "ok": true,
+      "fee": "1",
+      "amtOut": "32339999",
+      "reservesAfter": {
+        "amt0": "97999999967660001",
+        "amt1": "300000000099"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "100000000",
+      "ok": true,
+      "fee": "1000000",
+      "amtOut": "32329331320664",
+      "reservesAfter": {
+        "amt0": "97967670668679336",
+        "amt1": "300099000000"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "123456789012",
+      "ok": true,
+      "fee": "1234567890",
+      "amtOut": "28368420871186343",
+      "reservesAfter": {
+        "amt0": "69631579128813657",
+        "amt1": "422222221122"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "500000000000",
+      "ok": true,
+      "fee": "5000000000",
+      "amtOut": "61018867924528301",
+      "reservesAfter": {
+        "amt0": "36981132075471699",
+        "amt1": "795000000000"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "20000000",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "50000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 1"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "1000000000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 30611"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "1000000000000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 30303030"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "realWdoge": "0",
+      "amtIn": "10000000000000000",
+      "ok": false,
+      "error": "insufficient balance : 0 tick: WDOGE(WRAPPED-DOGE) from : DReserveAddressxxxxxxxxxxxxxxxxxxx  transfer : 277777777"
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "99",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "100",
+      "ok": true,
+      "fee": "1",
+      "amtOut": "12431392",
+      "reservesAfter": {
+        "amt0": "61234567877692064",
+        "amt1": "487654321197"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "100000000",
+      "ok": true,
+      "fee": "1000000",
+      "amtOut": "12428869182223",
+      "reservesAfter": {
+        "amt0": "61222139020941233",
+        "amt1": "487753321098"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "123456789012",
+      "ok": true,
+      "fee": "1234567890",
+      "amtOut": "12271704810507394",
+      "reservesAfter": {
+        "amt0": "48962863079616062",
+        "amt1": "609876542220"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "500000000000",
+      "ok": true,
+      "fee": "5000000000",
+      "amtOut": "30846158669248030",
+      "reservesAfter": {
+        "amt0": "30388409220875426",
+        "amt1": "982654321098"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "20000000",
+      "ok": true,
+      "fee": "1",
+      "amtOut": "158",
+      "reservesAfter": {
+        "amt0": "61234567910123456",
+        "amt1": "487654320939"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "50000000",
+      "ok": true,
+      "fee": "3",
+      "amtOut": "395",
+      "reservesAfter": {
+        "amt0": "61234567940123456",
+        "amt1": "487654320700"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "1000000000000",
+      "ok": true,
+      "fee": "79635",
+      "amtOut": "7883944",
+      "reservesAfter": {
+        "amt0": "61235567890123456",
+        "amt1": "487646357519"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "fee": "78357468",
+      "amtOut": "7757389410",
+      "reservesAfter": {
+        "amt0": "62234567890123456",
+        "amt1": "479818574220"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "10000000000000000",
+      "ok": true,
+      "fee": "684575390",
+      "amtOut": "67772963630",
+      "reservesAfter": {
+        "amt0": "71234567890123456",
+        "amt1": "419196782078"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "99",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "100",
+      "ok": true,
+      "fee": "1",
+      "amtOut": "2062499",
+      "reservesAfter": {
+        "amt0": "24999999997937501",
+        "amt1": "1200000000099"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "100000000",
+      "ok": true,
+      "fee": "1000000",
+      "amtOut": "2062329857786",
+      "reservesAfter": {
+        "amt0": "24997937670142214",
+        "amt1": "1200099000000"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "123456789012",
+      "ok": true,
+      "fee": "1234567890",
+      "amtOut": "2310924350868300",
+      "reservesAfter": {
+        "amt0": "22689075649131700",
+        "amt1": "1322222221122"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "500000000000",
+      "ok": true,
+      "fee": "5000000000",
+      "amtOut": "7300884955752212",
+      "reservesAfter": {
+        "amt0": "17699115044247788",
+        "amt1": "1695000000000"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "20000000",
+      "ok": true,
+      "fee": "9",
+      "amtOut": "950",
+      "reservesAfter": {
+        "amt0": "25000000020000000",
+        "amt1": "1199999999041"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "50000000",
+      "ok": true,
+      "fee": "23",
+      "amtOut": "2376",
+      "reservesAfter": {
+        "amt0": "25000000050000000",
+        "amt1": "1199999997601"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "1000000000000",
+      "ok": true,
+      "fee": "479980",
+      "amtOut": "47518100",
+      "reservesAfter": {
+        "amt0": "25001000000000000",
+        "amt1": "1199952001920"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "fee": "461538461",
+      "amtOut": "45692307692",
+      "reservesAfter": {
+        "amt0": "26000000000000000",
+        "amt1": "1153846153847"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "10000000000000000",
+      "ok": true,
+      "fee": "3428571428",
+      "amtOut": "339428571429",
+      "reservesAfter": {
+        "amt0": "35000000000000000",
+        "amt1": "857142857143"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "9090909090912",
+        "amt1": "3299999999999"
+      },
+      "realWdoge": "2999999999999",
+      "amtIn": "100000000",
+      "ok": true,
+      "fee": "1000000",
+      "amtOut": "272719091",
+      "reservesAfter": {
+        "amt0": "9090636371821",
+        "amt1": "3300098999999"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "9090909090912",
+        "amt1": "3299999999999"
+      },
+      "realWdoge": "2999999999999",
+      "amtIn": "1000000000000",
+      "ok": true,
+      "fee": "3270270270",
+      "amtOut": "323756756756",
+      "reservesAfter": {
+        "amt0": "10090909090912",
+        "amt1": "2972972972973"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "9090909090909",
+        "amt1": "3300000000000"
+      },
+      "realWdoge": "3000000000000",
+      "amtIn": "100000000",
+      "ok": false,
+      "error": "pump inner plate has been completed"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "9090909090909",
+        "amt1": "3300000000000"
+      },
+      "realWdoge": "3000000000000",
+      "amtIn": "1000000000000",
+      "ok": false,
+      "error": "pump inner plate has been completed"
+    },
+    {
+      "side": "buy",
+      "invited": false,
+      "reserves": {
+        "amt0": "6000000000000",
+        "amt1": "5000000000000"
+      },
+      "realWdoge": "4700000000000",
+      "amtIn": "100000000",
+      "ok": false,
+      "error": "pump inner plate has been completed"
+    },
+    {
+      "side": "sell",
+      "invited": false,
+      "reserves": {
+        "amt0": "6000000000000",
+        "amt1": "5000000000000"
+      },
+      "realWdoge": "4700000000000",
+      "amtIn": "1000000000000",
+      "ok": false,
+      "error": "pump inner plate has been completed"
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "100",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "199",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "200",
+      "ok": true,
+      "fee": "2",
+      "amtOut": "24862784",
+      "reservesAfter": {
+        "amt0": "61234567865260672",
+        "amt1": "487654321296"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "100000000",
+      "ok": true,
+      "fee": "1000000",
+      "amtOut": "12428869182223",
+      "reservesAfter": {
+        "amt0": "61222139020941233",
+        "amt1": "487753321098"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": true,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "20000000",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "sell",
+      "invited": true,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "50000000",
+      "ok": true,
+      "fee": "3",
+      "amtOut": "395",
+      "reservesAfter": {
+        "amt0": "61234567940123456",
+        "amt1": "487654320700"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": true,
+      "reserves": {
+        "amt0": "61234567890123456",
+        "amt1": "487654321098"
+      },
+      "realWdoge": "187654321098",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "fee": "78357468",
+      "amtOut": "7757389410",
+      "reservesAfter": {
+        "amt0": "62234567890123456",
+        "amt1": "479818574220"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "100",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "199",
+      "ok": false,
+      "error": "transfer amt \u003c 0"
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "200",
+      "ok": true,
+      "fee": "2",
+      "amtOut": "4124999",
+      "reservesAfter": {
+        "amt0": "24999999995875001",
+        "amt1": "1200000000198"
+      }
+    },
+    {
+      "side": "buy",
+      "invited": true,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "100000000",
+      "ok": true,
+      "fee": "1000000",
+      "amtOut": "2062329857786",
+      "reservesAfter": {
+        "amt0": "24997937670142214",
+        "amt1": "1200099000000"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": true,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "20000000",
+      "ok": true,
+      "fee": "9",
+      "amtOut": "950",
+      "reservesAfter": {
+        "amt0": "25000000020000000",
+        "amt1": "1199999999041"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": true,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "50000000",
+      "ok": true,
+      "fee": "23",
+      "amtOut": "2376",
+      "reservesAfter": {
+        "amt0": "25000000050000000",
+        "amt1": "1199999997601"
+      }
+    },
+    {
+      "side": "sell",
+      "invited": true,
+      "reserves": {
+        "amt0": "25000000000000000",
+        "amt1": "1200000000000"
+      },
+      "realWdoge": "900000000000",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "fee": "461538461",
+      "amtOut": "45692307692",
+      "reservesAfter": {
+        "amt0": "26000000000000000",
+        "amt1": "1153846153847"
+      }
+    }
+  ],
+  "remove": [
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "liquidity": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amt0Out": "0",
+      "amt1Out": "1"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "liquidity": "56666666",
+      "ok": true,
+      "amt0Out": "33333332",
+      "amt1Out": "99999998"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "liquidity": "169999999",
+      "ok": true,
+      "amt0Out": "99999999",
+      "amt1Out": "299999998"
+    },
+    {
+      "reserves": {
+        "amt0": "100000000",
+        "amt1": "300000000",
+        "total": "170000000"
+      },
+      "liquidity": "170000000",
+      "ok": true,
+      "amt0Out": "100000000",
+      "amt1Out": "300000000"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "liquidity": "1",
+      "ok": true,
+      "amt0Out": "37",
+      "amt1Out": "29629"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "liquidity": "1111111111",
+      "ok": true,
+      "amt0Out": "41152263004",
+      "amt1Out": "32921810703292"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "liquidity": "3333333332",
+      "ok": true,
+      "amt0Out": "123456788974",
+      "amt1Out": "98765432080246"
+    },
+    {
+      "reserves": {
+        "amt0": "123456789012",
+        "amt1": "98765432109876",
+        "total": "3333333333"
+      },
+      "liquidity": "3333333333",
+      "ok": true,
+      "amt0Out": "123456789012",
+      "amt1Out": "98765432109876"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "liquidity": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amt0Out": "0",
+      "amt1Out": "1000000000"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "liquidity": "333",
+      "ok": true,
+      "amt0Out": "2",
+      "amt1Out": "333000000000"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "liquidity": "999",
+      "ok": true,
+      "amt0Out": "6",
+      "amt1Out": "999000000000"
+    },
+    {
+      "reserves": {
+        "amt0": "7",
+        "amt1": "1000000000000",
+        "total": "1000"
+      },
+      "liquidity": "1000",
+      "ok": true,
+      "amt0Out": "7",
+      "amt1Out": "1000000000000"
+    }
+  ],
+  "source": {
+    "commit": "d29739f543e8ded74939f185ba0ed5126f0643ae",
+    "handlers": [
+      "verifySwapExec + SwapExec",
+      "verifySwapV2Exec + SwapV2Exec",
+      "verifySwapAdd + SwapAdd",
+      "verifySwapRemove + SwapRemove",
+      "verifyPumpTrade + PumpTrade"
+    ],
+    "repo": "dogeuni-indexer",
+    "run": "verify + storage handlers on a scratch sqlite DB"
+  },
+  "swapV1": [
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "998",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "996",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "997",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "55174322",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "99006951",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "99999989",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "99999999",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "998",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "996",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "997",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "55174322",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "99006951",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "99999989",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000",
+        "amt1": "100000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "99999999",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1",
+      "ok": true,
+      "amtOut": "800",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "799200",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "797600",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "798400",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "98371061747",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "7380012405506",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "98753203671129",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "98765432108653",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "1",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "1",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "1",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "153857",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "12461241",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "112329167391",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "123456789012",
+        "amt1": "98765432109876"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "123456787789",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1",
+      "ok": true,
+      "amtOut": "166666666666",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "995019920318",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "995009980039",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "995014955134",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "999999959378",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "999999999498",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "999999999999",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "999999999999",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "999",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1001",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "123456789",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "4",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "5",
+        "amt1": "1000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "4",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "29",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "29",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "29",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "3692592",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "299099999",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "29909701800273",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "AAAA",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "2970208540218470705",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1",
+      "ok": true,
+      "amtOut": "33",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "33299",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "33233",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "33266",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "4102880699",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "332333332228",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "33222292458139744",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "AAAA",
+        "tick1": "BBBB",
+        "amt0": "100000000000000000000",
+        "amt1": "3000000000000000000"
+      },
+      "tickIn": "BBBB",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "99969918780707911360",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "1",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "2",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "2",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "2",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "285592",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "23130537",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "198769107084",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "CARDI",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "217453704038",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "1",
+      "ok": true,
+      "amtOut": "430",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "430555",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "429693",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "1001",
+      "ok": true,
+      "amtOut": "430124",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "53018523238",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "10000000000",
+      "ok": true,
+      "amtOut": "4108558536898",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "1000000000000000",
+      "ok": true,
+      "amtOut": "93699082948041",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "CARDI",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "93719519470452",
+        "amt1": "217453706083"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "10000000000000000000000",
+      "ok": true,
+      "amtOut": "93719519468407",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    }
+  ],
+  "swapV2": [
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "999",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "1000",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "376",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "10000000000000",
+      "ok": true,
+      "amtOut": "30517303",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "326339998",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "325686665",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "40191740668291",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "98000000000000000",
+        "amt1": "300000000000"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "10000000000000",
+      "ok": true,
+      "amtOut": "95137293086660175",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "999",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "1000",
+      "ok": false,
+      "error": "transfer amt \u003c 0",
+      "amtOut": "0"
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "984",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "abababababababababababababababababababababababababababababababab",
+      "amtIn": "10000000000000",
+      "ok": true,
+      "amtOut": "73800124",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "999",
+      "ok": true,
+      "amtOut": "124874872",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "1000",
+      "ok": true,
+      "amtOut": "124624873",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "123456789",
+      "ok": true,
+      "amtOut": "13680829137787",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    },
+    {
+      "pool": {
+        "tick0": "abababababababababababababababababababababababababababababababab",
+        "tick1": "WDOGE(WRAPPED-DOGE)",
+        "amt0": "123456789012345",
+        "amt1": "987654321"
+      },
+      "tickIn": "WDOGE(WRAPPED-DOGE)",
+      "amtIn": "10000000000000",
+      "ok": true,
+      "amtOut": "123444560270784",
+      "minAtOut": true,
+      "minAtOutPlus1": false
+    }
+  ],
+  "version": 1
+}

@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   quotePumpBuy, quotePumpSell, initialPumpReserves, pumpRealWdoge, pumpProgressPercent,
-  isPumpTradingOpen, pumpSpotPrice, pumpMarketCapDoge, isPumpSellCovered,
+  isPumpTradingOpen, isPumpStuck, isPumpFeePayable, pumpSpotPrice, pumpMarketCapDoge, isPumpSellCovered,
 } from '../src/pump-curve.ts'
 
 test('quotePumpBuy: 与线上 HYPE 的链上储备逐位一致（保留 20%，买入 20 DOGE）', () => {
@@ -52,9 +52,22 @@ test('进度：真实 WDOGE = amt1 − 3000 DOGE，向下取整、封顶 100', (
   assert.equal(pumpProgressPercent('99999999999999999'), '100.0')
 })
 
-test('isPumpTradingOpen: indexer 按 amt1（含虚拟储备）≥ 100,000 DOGE 停止交易', () => {
-  assert.equal(isPumpTradingOpen('9999999999999'), true)
-  assert.equal(isPumpTradingOpen('10000000000000'), false)
+test('isPumpTradingOpen: indexer 按成交前 amt1（含虚拟储备）≥ 33,000 DOGE 停止交易', () => {
+  assert.equal(isPumpTradingOpen('3299999999999'), true)
+  assert.equal(isPumpTradingOpen('3300000000000'), false)
+  assert.equal(isPumpTradingOpen('10300000000000'), false)
+})
+
+test('isPumpStuck: 停止交易且真实 WDOGE 不到 100,000 DOGE（amt1 ∈ [33,000, 103,000)）', () => {
+  assert.equal(isPumpStuck('3299999999999'), false)
+  assert.equal(isPumpStuck('3300000000000'), true)
+  assert.equal(isPumpStuck('10299999999999'), true)
+  assert.equal(isPumpStuck('10300000000000'), false) // 毕业
+})
+
+test('isPumpFeePayable: 平台费 ≥ 2 sats（含邀请人分成 floor(fee ÷ 2) ≥ 1）', () => {
+  assert.equal(isPumpFeePayable(quotePumpBuy(initialPumpReserves(), '199')), false)
+  assert.equal(isPumpFeePayable(quotePumpBuy(initialPumpReserves(), '200')), true)
 })
 
 test('价格影响：小额接近 0，大额为正；现价与市值', () => {

@@ -30,7 +30,7 @@ ESM 与 CommonJS 都有，带类型声明（ES2020，需要 BigInt）。TypeScri
 | 滑点 | `minReceived` / `liquidityMin` / `isValidSlippageBps` |
 | 流动性 | `proportionalBaseUnits` / `lpPooledAmounts` / `lpWithdrawAmounts` |
 | WDOGE 费用 | `wdogeServiceFeeSats` / `wdogeDepositFeeSats` / `depositTotalSpendSats` / `maxDepositAmountSats` |
-| Pump 曲线 | `quotePumpBuy` / `quotePumpSell` / `isPumpSellCovered` 等、协议常量、`buildPumpTrade` / `buildPumpDeploy` |
+| Pump 曲线 | `quotePumpBuy` / `quotePumpSell` / `isPumpTradingOpen` / `isPumpStuck` / `isPumpFeePayable` / `isPumpSellCovered` 等、协议常量、`buildPumpTrade` / `buildPumpDeploy` |
 | 钱包 payload | `buildSwapV1` / `buildSwapV2` / `buildWdoge` / `buildAddLiquidity` / `buildRemoveLiquidity` / `buildCreatePool` |
 | 解析 | `parse(payload) → TradeIntent`；不认识的 p/op 抛 `UnknownPayloadError`，字段不合法抛 `InvalidPayloadError` |
 
@@ -42,6 +42,20 @@ import { buildSwapV1, parse, WDOGE_TICK } from 'dogeuni-dex-sdk'
 const payload = buildSwapV1({ tick0: WDOGE_TICK, tick1: 'CARDI', amt0: '1000000000', amt1: '12345678901', amt1Min: '12283950506', doge: 1 })
 parse(payload)
 // { kind: 'swap', protocol: 'pair-v1', amountIn: '1000000000', nativeIn: true, minOut: '12283950506', lpFee: '3000000', serviceFee: '50000000', ... }
+```
+
+## 审批对照向量
+
+`test/vectors/approval.json`：DogeUni Trade 按线上池子快照生成的真实 payload（swap pair-v1 / pair-v2、wdoge、add / remove / create、pump trade / deploy），每条附 `parse` 应得的 `intent`、按钱包取到的池子复核 `amt1_min` 的 `quoteExactIn` / `checkMinOut` 结果，以及 Trade 确认弹窗显示的十进制值；另有一组 `parse` 必须拒绝的 payload。字段说明见文件里的 `about`，`test/approval-vectors.test.mjs` 只用本包复算全部向量。钱包接入审批解码时可直接拿它当对照。向量不随 npm 包发布（`files` 不含 `test/`），从本仓库取。
+
+## indexer 黄金数据
+
+`test/vectors/indexer-golden.json`：直接在临时 sqlite 上跑 dogeuni-indexer 的真实 handler（swap pair-v1 / pair-v2、add、remove、pump trade，含 verify 校验）得到的链上结果——成交或失败（附 indexer 的错误信息）、输出数量、平台费、成交后储备，`source.commit` 是所用的 indexer 提交。`test/indexer-golden.test.mjs` 用本包逐位复算，链上的失败条件也一并核对：输出为 0；pump 平台费为 0，或交易者绑定了邀请人、`floor(平台费 ÷ 2)` 为 0；卖出毛额超过储备地址的真实 WDOGE。
+
+indexer 改了这几类逻辑要重新生成（生成器在 `test/indexer-golden/`，只读导出 indexer 的指定提交，不需要数据库或节点）：
+
+```sh
+test/indexer-golden/gen.sh <dogeuni-indexer 仓库路径> [ref，默认 origin/main]
 ```
 
 ## 校验来源
