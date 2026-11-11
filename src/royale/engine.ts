@@ -562,12 +562,16 @@ export interface RoyaleSeries {
 // 多场衔接：一场结束（有冠军）或取消后，下一场随即接上（截止 = nextC，门票从上一场截止后算，动作从上一场终局后算）。
 // 每场的规则按所在赛季的 versions 取（rulesAt）；不给 versions = 全程沿用 first 的规则。seasons 依次给出各次换季。
 // 奖金 / 退款不逐笔对账，按地址记账：应付（跨场跨季，含当前场）对奖池转给该地址的全部转出。
+// 推演一直走到当前场（截止还没到 tip 的那场一定停在报名期），场数不设默认上限：每场截止严格晚于上一场，
+// 场数天然不超过 tip − 第 1 场截止 + 1。maxSessions 只作调用方自己的保险，走满了仍没到当前场即抛错——
+// 别把半截结果当当前场返回（曾默认 200 场，v2 每 10 块一场，约 2000 块后页面停在第 200 场不再推进）。
 export function series(
   first: RoyaleConfig,
   data: RoyaleChainData,
   opts: { versions?: readonly RoyaleRuleVersion[]; seasons?: readonly RoyaleSeasonBreak[]; maxSessions?: number } = {},
 ): RoyaleSeries {
-  const { seasons = [], maxSessions = 200 } = opts
+  const { seasons = [], maxSessions = Infinity } = opts
+  if (!(maxSessions >= 1)) throw new Error(`maxSessions 不对：${maxSessions}`)
   let versions = opts.versions ?? null
   if (versions) checkRuleVersions(versions)
   for (const b of seasons) {
@@ -579,10 +583,12 @@ export function series(
   const sessions: RoyaleSeries['sessions'] = []
   let season = 1
   let cfg = withRules(first)
-  for (let i = 0; i < maxSessions; i++) {
+  for (;;) {
     const out = derive(cfg, data)
     sessions.push({ season, cfg, out })
     if (out.needHash !== null || (out.phase !== 'over' && out.phase !== 'cancelled')) break
+    if (sessions.length >= maxSessions) throw new Error(`推演了 ${maxSessions} 场仍未到当前场（maxSessions 太小）`)
+    const prevCutoff = cfg.cutoff
     const carry = { ticketFrom: cfg.cutoff, actFrom: out.endH as number, rollover: out.phase === 'over' ? fromUnits(out.rollover as bigint) : cfg.rollover }
     const brk = seasons[season - 1]
     if (brk && brk.afterSession === cfg.session) {
@@ -593,6 +599,7 @@ export function series(
     } else {
       cfg = withRules({ ...cfg, ...carry, session: cfg.session + 1, cutoff: out.nextC as number })
     }
+    if (!(cfg.cutoff > prevCutoff)) throw new Error(`下一场截止（${cfg.cutoff}）没有晚于上一场（${prevCutoff}）`)
   }
   const last = sessions[sessions.length - 1]
   return { sessions, season: last.season, versions, cfg: last.cfg, out: last.out, needHash: last.out.needHash, ledger: ledger(first, data, sessions) }

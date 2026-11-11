@@ -398,3 +398,16 @@ test('v2 节奏：2 只狗终局在截止后 5 块、空场截止后 2 块取消
   const empty = series(live, { tip: 260, inbound: [], outbound: [], hashes })
   assert.deepEqual(empty.sessions.slice(0, 3).map((x) => [x.out.phase, x.cfg.cutoff, x.out.nextC]), [['cancelled', 200, 210], ['cancelled', 210, 220], ['cancelled', 220, 230]])
 })
+
+test('series 不设默认场数上限：v2 空场每 10 块一场，3000 块后照样推到当前场；调用方给的 maxSessions 不够即抛错', () => {
+  const V2 = ROYALE_RULES[1].rules
+  const first = { pool: P, players: null, session: 1, cutoff: 1000, ticketFrom: 990, actFrom: 990, rollover: '0', ...V2 }
+  const data = { tip: 4005, inbound: [], outbound: [], hashes: {} }
+  const r = series(first, data, { versions: [{ fromSession: 1, rules: V2 }] })
+  // 第 k 场截止 1000 + 10(k−1)：截止 4000 的第 301 场在 4002 取消，当前是截止 4010 的第 302 场
+  assert.equal(r.sessions.length, 302)
+  assert.deepEqual([r.cfg.session, r.cfg.cutoff, r.out.phase], [302, 4010, 'lobby'])
+  assert.equal(series(first, data, { versions: [{ fromSession: 1, rules: V2 }], maxSessions: 302 }).cfg.session, 302)
+  assert.throws(() => series(first, data, { versions: [{ fromSession: 1, rules: V2 }], maxSessions: 301 }), /maxSessions/)
+  assert.throws(() => series(first, data, { maxSessions: 0 }), /maxSessions/)
+})

@@ -50,7 +50,7 @@ DogeUni Wow 的 WDOGE 链上小游戏「狗狗大逃杀」的判定引擎与规�
 
 | 内容 | 说明 |
 |---|---|
-| `series(first, data, { versions, seasons })` | 从第 1 场起逐场推演到当前高度：每场的报名、名单、每轮淘汰、奖金 / 退款，以及按地址的台账（`ledger`：应得 `earned`、未压满确认块的 `pending`、已转出 `claimed`、可领 `claimable`）。缺开奖块哈希时返回 `needHash`，调用方补上后再调用 |
+| `series(first, data, { versions, seasons })` | 从第 1 场起逐场推演到当前高度：每场的报名、名单、每轮淘汰、奖金 / 退款，以及按地址的台账（`ledger`：应得 `earned`、未压满确认块的 `pending`、已转出 `claimed`、可领 `claimable`）。缺开奖块哈希时返回 `needHash`，调用方补上后再调用。场数不设默认上限（每场截止严格递增，自然停在当前场）；`maxSessions` 是调用方自选的保险，走满了仍没到当前场即抛错，不返回半截结果 |
 | `derive` / `decode` / `planRound` / `nextCutoff` | 单场推演、按金额识别一笔入池转账、单轮开奖、下一场截止高度 |
 | `royaleMoves` / `walletAmount` / `ticketAmount` | 某地址此刻按规则能转的单与金额 |
 | `ROYALE_POOL` / `ROYALE_TICK` / `ROYALE_FIRST` / `ROYALE_RULES` / `ROYALE_SEASONS` | 奖池地址、代币、第 1 场、按场次生效的规则版本表、换季表 |
