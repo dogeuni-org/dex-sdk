@@ -6,7 +6,7 @@
 // 判定逻辑要变时，在引擎里按 cfg.version 分支，旧版本走原来的代码。
 // 奖池地址 / 起始场 / 发送方名单不属于规则版本，改它们等于另起一套「新的第 1 场」。
 // 场次从 1 重新数而账要接着算时用换季（ROYALE_SEASONS，只追加）：上一季到某场为止，新一季带自己的规则表从第 1 场起。
-import type { RoyaleConfig, RoyaleRuleVersion, RoyaleSeasonBreak } from './engine.ts'
+import type { RoyaleConfig, RoyaleRules, RoyaleRuleVersion, RoyaleSeasonBreak } from './engine.ts'
 import type { RoyalePrizeSeason } from './prize.ts'
 
 /** 奖池地址：门票 / 动作的 WDOGE 转到这里，奖金与退款从这里领取 / 转出 */
@@ -106,11 +106,18 @@ export const ROYALE_PRIZE_POOL_ID = '3c16dc89b63b6ff354b9e6d5265350da4547ed02d60
 export const ROYALE_PRIZE_RESERVE = 'AArHHsGFL2QNXA8NMsCPv5FhpEACMpAWpW'
 
 /**
+ * v3（2026-11-11 决定门票 10 WDOGE）：只把门票从 1 改成 10，其余与 v2 相同（判定逻辑走 v2 分支：只收整数门票、没有动作）。
+ * 只用于 prize 赛季，不进第 1 季的 ROYALE_RULES。
+ */
+export const ROYALE_RULES_V3: RoyaleRules = { ...ROYALE_RULES[1].rules, version: 3, ticket: 10 }
+
+/**
  * 第 3 季 = 第一个 prize 赛季（只追加；上线后一个数都别改）。门票改为对 prize 池 deposit（memo `royale:3:<场>`），
  * 奖金 / 退款由结算方按台账公布累计可领额、用户自己 claim。与转账奖池的第 1–2 季是两套独立的推演
  * （奖池、门票来源都不同，不接顺延奖池），所以不写进 ROYALE_SEASONS。
- * 规则 = v2（只收整数门票、10 块一场、没有动作、没有保底）；confirmations 6：一场终局后压满 6 块才计入可领额。
+ * 规则 = v3（门票 10 WDOGE、只收整数门票、10 块一场、没有动作、没有保底）；confirmations 6：一场终局后压满 6 块才计入可领额。
  * 高度：原定 ticketFrom 6453000 / cutoff 6453030，因 DEX 余额与奖池记账分叉暂停、开放前（池子 0 笔存入）推迟到 6453700 / 6453730（0.4.1）。
+ * 门票：0.4.1 是 v2（1 WDOGE），开放前（池子 0 笔存入）改为 v3（10 WDOGE，0.4.2）。
  */
 export const ROYALE_PRIZE_SEASON: RoyalePrizeSeason = {
   season: 3,
@@ -118,6 +125,6 @@ export const ROYALE_PRIZE_SEASON: RoyalePrizeSeason = {
   cutoff: 6453730,
   ticketFrom: 6453700,
   actFrom: 6453700,
-  versions: [{ fromSession: 1, rules: ROYALE_RULES[1].rules }],
+  versions: [{ fromSession: 1, rules: ROYALE_RULES_V3 }],
   confirmations: 6,
 }

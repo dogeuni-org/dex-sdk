@@ -2,16 +2,18 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { series, toUnits, rulesAt } from '../src/royale/engine.ts'
-import { ROYALE_PRIZE_SEASON, ROYALE_PRIZE_POOL_ID, ROYALE_RULES } from '../src/royale/config.ts'
+import { ROYALE_PRIZE_SEASON, ROYALE_PRIZE_POOL_ID, ROYALE_RULES, ROYALE_RULES_V3 } from '../src/royale/config.ts'
 import { checkPrizeSeason, royalePrizeFirst, royalePrizeInbound, royalePrizeMemo } from '../src/royale/prize.ts'
 
-test('ROYALE_PRIZE_SEASON：合法、第 3 季、v2、确认 6 块', () => {
+test('ROYALE_PRIZE_SEASON：合法、第 3 季、v3（门票 10、其余同 v2）、确认 6 块', () => {
   checkPrizeSeason(ROYALE_PRIZE_SEASON)
   assert.equal(ROYALE_PRIZE_SEASON.season, 3)
   assert.equal(ROYALE_PRIZE_SEASON.poolId, ROYALE_PRIZE_POOL_ID)
   assert.equal(ROYALE_PRIZE_SEASON.versions.length, 1)
-  assert.deepEqual(ROYALE_PRIZE_SEASON.versions[0].rules, ROYALE_RULES[1].rules)
-  assert.equal(ROYALE_PRIZE_SEASON.versions[0].rules.version, 2)
+  assert.deepEqual(ROYALE_PRIZE_SEASON.versions[0].rules, ROYALE_RULES_V3)
+  assert.equal(ROYALE_PRIZE_SEASON.versions[0].rules.version, 3)
+  assert.equal(ROYALE_PRIZE_SEASON.versions[0].rules.ticket, 10)
+  assert.deepEqual({ ...ROYALE_RULES_V3, version: 2, ticket: 1 }, ROYALE_RULES[1].rules)
   assert.equal(ROYALE_PRIZE_SEASON.versions[0].rules.floor, 0)
   assert.equal(ROYALE_PRIZE_SEASON.confirmations, 6)
 })
@@ -55,10 +57,11 @@ test('series 的 firstSeason：只改赛季标注，推演结果与默认相同'
   const first = royalePrizeFirst(s)
   const hashes = {}
   for (let h = 1000; h < 1200; h++) hashes[h] = ((h * 2654435761) >>> 0).toString(16).padStart(8, '0') + 'ef'.repeat(28)
+  const ticket = String(s.versions[0].rules.ticket)
   const deposits = [
-    { tx_hash: 'a1', block_number: 1010, address: 'DA', amt: String(toUnits('1')), state: 'processed' },
-    { tx_hash: 'b1', block_number: 1020, address: 'DB', amt: String(toUnits('1')), state: 'processed' },
-    { tx_hash: 'c1', block_number: 1025, address: 'DC', amt: String(toUnits('1.5')), state: 'processed' },
+    { tx_hash: 'a1', block_number: 1010, address: 'DA', amt: String(toUnits(ticket)), state: 'processed' },
+    { tx_hash: 'b1', block_number: 1020, address: 'DB', amt: String(toUnits(ticket)), state: 'processed' },
+    { tx_hash: 'c1', block_number: 1025, address: 'DC', amt: String(toUnits(`${ticket}.5`)), state: 'processed' },
   ]
   const data = { tip: 1150, inbound: royalePrizeInbound(s.poolId, deposits), outbound: [], hashes }
   const a = series(first, data, { versions: s.versions })
