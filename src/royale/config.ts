@@ -110,13 +110,14 @@ export const ROYALE_PRIZE_RESERVE = 'AArHHsGFL2QNXA8NMsCPv5FhpEACMpAWpW'
  * 奖金 / 退款由结算方按台账公布累计可领额、用户自己 claim。与转账奖池的第 1–2 季是两套独立的推演
  * （奖池、门票来源都不同，不接顺延奖池），所以不写进 ROYALE_SEASONS。
  * 规则 = v2（只收整数门票、10 块一场、没有动作、没有保底）；confirmations 6：一场终局后压满 6 块才计入可领额。
+ * 高度：原定 ticketFrom 6453000 / cutoff 6453030，因 DEX 余额与奖池记账分叉暂停、开放前（池子 0 笔存入）推迟到 6453700 / 6453730（0.4.1）。
  */
 export const ROYALE_PRIZE_SEASON: RoyalePrizeSeason = {
   season: 3,
   poolId: ROYALE_PRIZE_POOL_ID,
-  cutoff: 6453030,
-  ticketFrom: 6453000,
-  actFrom: 6453000,
+  cutoff: 6453730,
+  ticketFrom: 6453700,
+  actFrom: 6453700,
   versions: [{ fromSession: 1, rules: ROYALE_RULES[1].rules }],
   confirmations: 6,
 }
