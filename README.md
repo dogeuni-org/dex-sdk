@@ -30,7 +30,7 @@ ESM 与 CommonJS 都有，带类型声明（ES2020，需要 BigInt）。TypeScri
 | 滑点 | `minReceived` / `liquidityMin` / `isValidSlippageBps` |
 | 流动性 | `proportionalBaseUnits` / `lpPooledAmounts` / `lpWithdrawAmounts` |
 | WDOGE 费用 | `wdogeServiceFeeSats` / `wdogeDepositFeeSats` / `depositTotalSpendSats` / `maxDepositAmountSats` |
-| Pump 曲线 | `quotePumpBuy` / `quotePumpSell` / `isPumpTradingOpen` / `isPumpStuck` / `isPumpFeePayable` / `isPumpSellCovered` 等、协议常量、`buildPumpTrade` / `buildPumpDeploy` |
+| Pump 曲线 | `quotePumpBuy` / `quotePumpSell` / `isPumpTradingOpen` / `isPumpStuck` / `isPumpFeePayable` / `isPumpSellCovered` / `pumpTradeTotalSpendSats` 等、协议常量、`buildPumpTrade` / `buildPumpDeploy` |
 | 钱包 payload | `buildSwapV1` / `buildSwapV2` / `buildWdoge` / `buildAddLiquidity` / `buildRemoveLiquidity` / `buildCreatePool` |
 | 解析 | `parse(payload) → TradeIntent`；不认识的 p/op 抛 `UnknownPayloadError`，字段不合法抛 `InvalidPayloadError` |
 
@@ -42,6 +42,26 @@ import { buildSwapV1, parse, WDOGE_TICK } from 'dogeuni-dex-sdk'
 const payload = buildSwapV1({ tick0: WDOGE_TICK, tick1: 'CARDI', amt0: '1000000000', amt1: '12345678901', amt1Min: '12283950506', doge: 1 })
 parse(payload)
 // { kind: 'swap', protocol: 'pair-v1', amountIn: '1000000000', nativeIn: true, minOut: '12283950506', lpFee: '3000000', serviceFee: '50000000', ... }
+```
+
+## 狗狗大逃杀（`dogeuni-dex-sdk/royale`）
+
+DogeUni Wow 的 WDOGE 链上小游戏「狗狗大逃杀」的判定引擎与规则参数，单独放在子路径，不进主入口。游戏没有后端：报名 = 向奖池地址转 WDOGE，名次、奖金与退款只由奖池地址的入账 / 出账转账和开奖块哈希按规则推出。网页展示与奖池结算方共用这一份实现，任何人拿同样的链上数据都能复算出同样的结果。
+
+| 内容 | 说明 |
+|---|---|
+| `series(first, data, { versions, seasons })` | 从第 1 场起逐场推演到当前高度：每场的报名、名单、每轮淘汰、奖金 / 退款，以及按地址的台账（`ledger`：应得 `earned`、未压满确认块的 `pending`、已转出 `claimed`、可领 `claimable`）。缺开奖块哈希时返回 `needHash`，调用方补上后再调用 |
+| `derive` / `decode` / `planRound` / `nextCutoff` | 单场推演、按金额识别一笔入池转账、单轮开奖、下一场截止高度 |
+| `royaleMoves` / `walletAmount` / `ticketAmount` | 某地址此刻按规则能转的单与金额 |
+| `ROYALE_POOL` / `ROYALE_TICK` / `ROYALE_FIRST` / `ROYALE_RULES` / `ROYALE_SEASONS` | 奖池地址、代币、第 1 场、按场次生效的规则版本表、换季表 |
+
+规则版本表与换季表**只追加**：已有条目改一个数，旧场次的复算结果就会变。规则变化都在表尾追加新版本，引擎按 `cfg.version` 分支。
+
+```js
+import { series, ROYALE_FIRST, ROYALE_RULES, ROYALE_SEASONS } from 'dogeuni-dex-sdk/royale'
+
+// inbound / outbound：奖池的 WDOGE 转账 { tx, from, to, amt: BigInt 最小单位, h: 区块高度, ok: 链上执行成功 }
+const r = series(ROYALE_FIRST, { tip, inbound, outbound, hashes }, { versions: ROYALE_RULES, seasons: ROYALE_SEASONS })
 ```
 
 ## 审批对照向量

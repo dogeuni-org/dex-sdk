@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import {
   quotePumpBuy, quotePumpSell, initialPumpReserves, pumpRealWdoge, pumpProgressPercent,
   isPumpTradingOpen, isPumpStuck, isPumpFeePayable, pumpSpotPrice, pumpMarketCapDoge, isPumpSellCovered,
+  pumpTradeTotalSpendSats,
 } from '../src/pump-curve.ts'
 
 test('quotePumpBuy: 与线上 HYPE 的链上储备逐位一致（保留 20%，买入 20 DOGE）', () => {
@@ -89,4 +90,16 @@ test('isPumpSellCovered: 卖出毛额不能超过储备地址的真实 WDOGE（a
   // 再多卖一点创建者的币就超了
   const more = (BigInt(buy.amountOut) * 3n).toString()
   assert.equal(isPumpSellCovered(buy.reserves.amt1, quotePumpSell(buy.reserves, more)), false)
+})
+
+test('pumpTradeTotalSpendSats: 与钱包 calculateTotalSpend 对 pump trade 的总额一致', () => {
+  // 钱包：Σ原生 DOGE 支付 + Σ calculateFee + floor(networkFee + 1e5) + networkFee + 2 × PumpTipFee，networkFee 按默认 1e8
+  const wallet = (paid, fee) => paid + fee + Math.floor(1e8 + 1e5) + 1e8 + 2 * 1e7
+  // 买入 100 DOGE：服务费千三 = 0.3 DOGE，低于最低 0.5 DOGE
+  assert.equal(pumpTradeTotalSpendSats('buy', '10000000000'), String(wallet(1e10, 5e7)))
+  // 买入 1000 DOGE：服务费千三 = 3 DOGE
+  assert.equal(pumpTradeTotalSpendSats('buy', '100000000000'), String(wallet(1e11, 3e8)))
+  // 卖出（doge=0）：nativeDogePayments 为空，只剩小费与网络开销，与数量无关
+  assert.equal(pumpTradeTotalSpendSats('sell', '1'), String(wallet(0, 0)))
+  assert.equal(pumpTradeTotalSpendSats('sell', '79475461951122591'), String(wallet(0, 0)))
 })

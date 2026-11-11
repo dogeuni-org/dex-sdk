@@ -1,6 +1,6 @@
 {
   "name": "dogeuni-dex-sdk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DogeUni DEX 协议纯函数：报价、payload 构造与解析、费用与金额换算（与 dogeuni-indexer 逐位一致，零依赖）",
   "license": "MIT",
   "repository": {
@@ -13,6 +13,13 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "royale": [
+        "./dist/royale/index.d.ts"
+      ]
+    }
+  },
   "exports": {
     ".": {
       "dogeuni-source": "./src/index.ts",
@@ -24,6 +31,17 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./royale": {
+      "dogeuni-source": "./src/royale/index.ts",
+      "import": {
+        "types": "./dist/royale/index.d.ts",
+        "default": "./dist/royale/index.js"
+      },
+      "require": {
+        "types": "./dist/royale/index.d.cts",
+        "default": "./dist/royale/index.cjs"
+      }
     }
   },
   "files": [
@@ -33,7 +51,7 @@
   "scripts": {
     "test": "node --test 'test/*.test.mjs'",
     "typecheck": "tsc -p tsconfig.json",
-    "build": "tsup src/index.ts --format esm,cjs --dts --target es2020 --clean --out-dir dist"
+    "build": "tsup src/index.ts src/royale/index.ts --format esm,cjs --dts --target es2020 --clean --out-dir dist"
   },
   "devDependencies": {
     "tsup": "8.5.1",

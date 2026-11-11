@@ -1,5 +1,6 @@
 // Pump（meme20 曲线发币）协议常量与报价——与 dogeuni-indexer 逐位一致（storage/pump.go、explorer/pump.go、explorer/verifys.go），
 // 金额一律链上最小单位整数串，内部用 BigInt，别经 Number。
+import { WALLET_NETWORK_OVERHEAD_SATS, depositTotalSpendSats } from './wdoge-fees.ts'
 
 export const PUMP_WDOGE_TICK_ID = 'WDOGE(WRAPPED-DOGE)'
 /** pump 代币与 WDOGE 都是 8 位精度 */
@@ -151,4 +152,16 @@ export function pumpMarketCapDoge(reserves: PumpReserves): number | null {
  */
 export function isPumpSellCovered(amt1: string, quote: Pick<PumpQuote, 'fee' | 'amountOut'>): boolean {
   return big(quote.fee) + big(quote.amountOut) <= big(pumpRealWdoge(amt1))
+}
+
+/**
+ * pump trade 时钱包从原生 DOGE 可花余额里要求的总额（sat），= dogeuni-wallet calculateTotalSpend，不够即 5002：
+ * - 买入（doge=1、tick0_id = WDOGE）：与原生 DOGE 支付的 swap 同一笔（amt0 + WDOGE 服务费 + 网络开销预留，`depositTotalSpendSats`）；
+ * - 卖出（doge=0、tick0_id = 代币）：不花 DOGE 本金，只有网络开销预留，与卖出数量无关。
+ * 两边另加两笔小费（钱包对 pump trade 计两次 PumpTipFee）。网络费按钱包默认费率预留（见 `WALLET_NETWORK_OVERHEAD_SATS`），
+ * 用户在钱包里调高费率时由钱包自己拦下
+ */
+export function pumpTradeTotalSpendSats(side: 'buy' | 'sell', amt0: string): string {
+  const base = side === 'buy' ? big(depositTotalSpendSats(amt0)) : big(WALLET_NETWORK_OVERHEAD_SATS)
+  return (base + big(PUMP_TIP_FEE) * BigInt(2)).toString()
 }
