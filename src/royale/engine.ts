@@ -546,7 +546,7 @@ export interface RoyaleSeasonBreak {
 }
 
 export interface RoyaleSeries {
-  /** 全部场次（旧 → 新，跨季）；season 从 1 数 */
+  /** 全部场次（旧 → 新，跨季）；season 从 firstSeason（默认 1）数 */
   sessions: { season: number; cfg: RoyaleConfig; out: RoyaleOutcome }[]
   /** 当前场所在的赛季与它的规则版本表（没给 versions 时为 null） */
   season: number
@@ -568,10 +568,18 @@ export interface RoyaleSeries {
 export function series(
   first: RoyaleConfig,
   data: RoyaleChainData,
-  opts: { versions?: readonly RoyaleRuleVersion[]; seasons?: readonly RoyaleSeasonBreak[]; maxSessions?: number } = {},
+  opts: {
+    versions?: readonly RoyaleRuleVersion[]
+    seasons?: readonly RoyaleSeasonBreak[]
+    maxSessions?: number
+    resume?: RoyaleSeries
+    /** first 所在赛季的编号（只用于标注 sessions / 台账明细的 season，默认 1；seasons[0] 是它之后的第一次换季） */
+    firstSeason?: number
+  } = {},
 ): RoyaleSeries {
-  const { seasons = [], maxSessions = Infinity } = opts
+  const { seasons = [], maxSessions = Infinity, firstSeason = 1 } = opts
   if (!(maxSessions >= 1)) throw new Error(`maxSessions 不对：${maxSessions}`)
+  if (!Number.isInteger(firstSeason) || firstSeason < 1) throw new Error(`firstSeason 不对：${firstSeason}`)
   let versions = opts.versions ?? null
   if (versions) checkRuleVersions(versions)
   for (const b of seasons) {
@@ -579,27 +587,65 @@ export function series(
     if (b.versions[0].fromSession !== 1) throw new Error('新一季的规则版本表要从第 1 场起')
     if (!Number.isInteger(b.afterSession) || b.afterSession < 1 || !Number.isInteger(b.cutoff)) throw new Error('换季参数不对')
   }
-  const withRules = (c: RoyaleConfig): RoyaleConfig => (versions ? { ...c, ...rulesAt(versions, c.session).rules } : c)
-  const sessions: RoyaleSeries['sessions'] = []
-  let season = 1
-  let cfg = withRules(first)
-  for (;;) {
-    const out = derive(cfg, data)
-    sessions.push({ season, cfg, out })
-    if (out.needHash !== null || (out.phase !== 'over' && out.phase !== 'cancelled')) break
-    if (sessions.length >= maxSessions) throw new Error(`推演了 ${maxSessions} 场仍未到当前场（maxSessions 太小）`)
-    const prevCutoff = cfg.cutoff
+  const withRules = (vs: readonly RoyaleRuleVersion[] | null, c: RoyaleConfig): RoyaleConfig => (vs ? { ...c, ...rulesAt(vs, c.session).rules } : c)
+  // 下一场：同季接续，或按换季参数进入新一季第 1 场
+  const following = (season: number, cfg: RoyaleConfig, out: RoyaleOutcome) => {
     const carry = { ticketFrom: cfg.cutoff, actFrom: out.endH as number, rollover: out.phase === 'over' ? fromUnits(out.rollover as bigint) : cfg.rollover }
-    const brk = seasons[season - 1]
+    const brk = seasons[season - firstSeason]
+    let next: { season: number; versions: readonly RoyaleRuleVersion[] | null; cfg: RoyaleConfig }
     if (brk && brk.afterSession === cfg.session) {
       if (brk.cutoff <= carry.actFrom) throw new Error(`第 ${season + 1} 季第 1 场的截止（${brk.cutoff}）须晚于上一季最后一场的终局（${carry.actFrom}）`)
-      season += 1
-      versions = brk.versions
-      cfg = withRules({ ...cfg, ...carry, session: 1, cutoff: brk.cutoff })
+      next = { season: season + 1, versions: brk.versions, cfg: withRules(brk.versions, { ...cfg, ...carry, session: 1, cutoff: brk.cutoff }) }
     } else {
-      cfg = withRules({ ...cfg, ...carry, session: cfg.session + 1, cutoff: out.nextC as number })
+      next = { season, versions, cfg: withRules(versions, { ...cfg, ...carry, session: cfg.session + 1, cutoff: out.nextC as number }) }
     }
-    if (!(cfg.cutoff > prevCutoff)) throw new Error(`下一场截止（${cfg.cutoff}）没有晚于上一场（${prevCutoff}）`)
+    if (!(next.cfg.cutoff > cfg.cutoff)) throw new Error(`下一场截止（${next.cfg.cutoff}）没有晚于上一场（${cfg.cutoff}）`)
+    return next
+  }
+  // 每场只把可能用到的一段入池转账交给 derive（全表按高度排一次），推演量随场数线性增长——
+  // 曾每场都把全部转账解码一遍，场数 × 转账数，测试数据下 7 天 1.5s、30 天 25s。
+  // 下界：门票 / 动作起点（ticketFrom ≤ actFrom 逐场递增）。上界：一场结束前的判定只用到高度 ≤ 终局 endH 的转账，
+  // 下一场截止又晚于 endH，所以只要上界 ≥ 下一场截止，结果就与整表推演相同；不够就放宽重推。
+  // 已结束的场次只列到下一场截止为止的迟到门票（它们入座下一场）；再往后的门票属于更后面的场次，不列。
+  const sorted = data.inbound.filter((t) => t.h !== null && t.h <= data.tip).sort(byHeight)
+  const above = (h: number) => {
+    let lo = 0, hi = sorted.length
+    while (lo < hi) { const mid = (lo + hi) >> 1; if ((sorted[mid].h as number) > h) hi = mid; else lo = mid + 1 }
+    return lo
+  }
+  // resume：同一个 first / opts / data 上一次的结果（data 只多了它要的开奖块哈希）——沿用已结束的场次，从它停下的那场接着推，
+  // 补哈希时不必每补一个都从第 1 场重推。data 有别的变化（新区块、新转账）时别传。
+  const sessions: RoyaleSeries['sessions'] = opts.resume ? opts.resume.sessions.slice(0, -1) : []
+  let season = opts.resume ? opts.resume.season : firstSeason
+  if (opts.resume) versions = opts.resume.versions
+  let cfg = opts.resume ? opts.resume.cfg : withRules(versions, first)
+  for (;;) {
+    const lo = above(Math.min(cfg.ticketFrom, cfg.actFrom))
+    let span = 64
+    let out: RoyaleOutcome
+    let next: ReturnType<typeof following> | null = null
+    for (;;) {
+      next = null
+      const hi = above(cfg.cutoff + span)
+      out = derive(cfg, { ...data, inbound: sorted.slice(lo, hi) })
+      const whole = hi === sorted.length
+      if (out.needHash !== null || (out.phase !== 'over' && out.phase !== 'cancelled')) {
+        if (whole) break
+        span = Infinity
+        continue
+      }
+      next = following(season, cfg, out)
+      if (whole || next.cfg.cutoff <= cfg.cutoff + span) break
+      span *= 4
+    }
+    sessions.push({ season, cfg, out })
+    if (!next) break
+    const nextCutoff = next.cfg.cutoff
+    out.txs = out.txs.filter((t) => t.st !== 'next' || t.h <= nextCutoff)
+    if (sessions.length >= maxSessions) throw new Error(`推演了 ${maxSessions} 场仍未到当前场（maxSessions 太小）`)
+    season = next.season
+    versions = next.versions
+    cfg = next.cfg
   }
   const last = sessions[sessions.length - 1]
   return { sessions, season: last.season, versions, cfg: last.cfg, out: last.out, needHash: last.out.needHash, ledger: ledger(first, data, sessions) }

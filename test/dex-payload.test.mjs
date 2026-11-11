@@ -2,6 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   WDOGE_TICK, buildSwapV1, buildSwapV2, buildWdoge, buildAddLiquidity, buildRemoveLiquidity, buildCreatePool,
+  buildPrizeDeposit, buildPrizeClaim,
 } from '../src/dex-payload.ts'
 
 const ID = 'c730c453e2b0011d222744aa3c6bf648f233a5c0f6a6ed3da47726007ba985fa'
@@ -55,4 +56,19 @@ test('buildAddLiquidity / buildRemoveLiquidity / buildCreatePool', () => {
     op: 'create', p: 'pair-v1', tick0: 'A', tick1: WDOGE_TICK, amt0: '300', amt1: '400', amt0_min: '300', amt1_min: '400', doge: 0,
   })
   assert.throws(() => buildAddLiquidity({ tick: 'T', tick0: 'A', tick1: 'B', amt0: '0', amt1: '1', amt0Min: '0', amt1Min: '0', doge: 0 }))
+})
+
+test('buildPrizeDeposit / buildPrizeClaim：p 在前、字段原样，非法 pool_id / amt / memo 抛错', () => {
+  const PID = 'ab'.repeat(32)
+  assert.deepEqual(buildPrizeDeposit({ poolId: PID, amt: '100000000', memo: 'royale:3:1' }), { p: 'prize-v1', op: 'deposit', pool_id: PID, amt: '100000000', memo: 'royale:3:1' })
+  assert.deepEqual(Object.keys(buildPrizeDeposit({ poolId: PID, amt: '1' })), ['p', 'op', 'pool_id', 'amt'])
+  assert.deepEqual(buildPrizeClaim({ poolId: PID }), { p: 'prize-v1', op: 'claim', pool_id: PID })
+  for (const amt of ['0', '01', '1.5', '-1', '1e8', '']) assert.throws(() => buildPrizeDeposit({ poolId: PID, amt }))
+  for (const poolId of ['AB'.repeat(32), 'ab'.repeat(31), '']) {
+    assert.throws(() => buildPrizeDeposit({ poolId, amt: '1' }))
+    assert.throws(() => buildPrizeClaim({ poolId }))
+  }
+  assert.throws(() => buildPrizeDeposit({ poolId: PID, amt: '1', memo: 'x'.repeat(65) }))
+  assert.throws(() => buildPrizeDeposit({ poolId: PID, amt: '1', memo: '门票' }))
+  assert.doesNotThrow(() => buildPrizeDeposit({ poolId: PID, amt: '1', memo: 'x'.repeat(64) }))
 })

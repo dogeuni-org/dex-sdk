@@ -411,3 +411,51 @@ test('series 不设默认场数上限：v2 空场每 10 块一场，3000 块后�
   assert.throws(() => series(first, data, { versions: [{ fromSession: 1, rules: V2 }], maxSessions: 301 }), /maxSessions/)
   assert.throws(() => series(first, data, { maxSessions: 0 }), /maxSessions/)
 })
+
+// series 每场只把一段入池转账交给 derive（上界不够即放宽重推），结果须与「每场用整表 derive」相同；
+// 唯一的差别：已结束场次的迟到门票（next）只列到下一场截止为止
+test('series 分段推演 = 每场整表 derive；已结束场次的 next 门票只列到下一场截止；resume 与从头推相同', () => {
+  const V2 = ROYALE_RULES[1].rules
+  const hs = {}
+  for (let h = 0; h < 6000; h++) hs[h] = createHash('sha256').update(String(h)).digest('hex')
+  const cases = [
+    // v1：grid 720，下一场截止远在截止后 64 块之外，走放宽重推；带动作 / 错单 / 链上失败 / 重复门票
+    { first: cfg, versions: undefined, tip: 3000 },
+    { first: { ...cfg, players: null, cutoff: 1000, ticketFrom: 990, actFrom: 990, ...V2 }, versions: [{ fromSession: 1, rules: V2 }], tip: 2500 },
+  ]
+  for (const { first, versions, tip } of cases) {
+    const rows = []
+    let k = 0
+    const add = (from, amt, h, ok = true) => rows.push({ tx: 't' + String(++k).padStart(5, '0'), from, to: P, amt: U(amt), h, ok })
+    for (let h = 0; h < tip; h += 7) {
+      const who = [A, B, C3][h % 3]
+      add(who, '1', h)
+      if (h % 5 === 0) add(who, walletAmount(1, 1 + (h % 4), 1 + (h % 3), ['shield', 'bonk', 'revive'][h % 3]), h + 2)
+      if (h % 11 === 0) add(who, '1.5', h + 3)
+      if (h % 13 === 0) add(who, '1', h + 1, false)
+    }
+    add(A, '1', null)
+    const data = { tip, inbound: rows, outbound: [], hashes: hs }
+    const opts = versions ? { versions } : {}
+    const r = series(first, data, opts)
+    assert.ok(r.sessions.length >= 3)
+    r.sessions.forEach(({ cfg: c, out }, i) => {
+      const full = derive(c, data)
+      const nextC = r.sessions[i + 1]?.cfg.cutoff
+      if (nextC !== undefined) full.txs = full.txs.filter((t) => t.st !== 'next' || t.h <= nextC)
+      assert.deepEqual(out, full, `第 ${c.session} 场`)
+      if (nextC !== undefined) assert.ok(out.txs.every((t) => t.st !== 'next' || (t.h > c.cutoff && t.h <= nextC)))
+    })
+    // 缺开奖块哈希：补一个、从停下的那场接着推，与补齐后从头推相同
+    const partial = { ...data, hashes: {} }
+    let p = series(first, partial, opts)
+    let fills = 0
+    while (p.needHash !== null) {
+      partial.hashes[p.needHash] = hs[p.needHash]
+      p = series(first, partial, { ...opts, resume: p })
+      fills++
+    }
+    assert.ok(fills > 0)
+    assert.deepEqual(p, series(first, partial, opts))
+  }
+})

@@ -31,7 +31,7 @@ ESM 与 CommonJS 都有，带类型声明（ES2020，需要 BigInt）。TypeScri
 | 流动性 | `proportionalBaseUnits` / `lpPooledAmounts` / `lpWithdrawAmounts` |
 | WDOGE 费用 | `wdogeServiceFeeSats` / `wdogeDepositFeeSats` / `depositTotalSpendSats` / `maxDepositAmountSats` |
 | Pump 曲线 | `quotePumpBuy` / `quotePumpSell` / `isPumpTradingOpen` / `isPumpStuck` / `isPumpFeePayable` / `isPumpSellCovered` / `pumpTradeTotalSpendSats` 等、协议常量、`buildPumpTrade` / `buildPumpDeploy` |
-| 钱包 payload | `buildSwapV1` / `buildSwapV2` / `buildWdoge` / `buildAddLiquidity` / `buildRemoveLiquidity` / `buildCreatePool` |
+| 钱包 payload | `buildSwapV1` / `buildSwapV2` / `buildWdoge` / `buildAddLiquidity` / `buildRemoveLiquidity` / `buildCreatePool`；prize-v1 奖池 `buildPrizeDeposit` / `buildPrizeClaim`（钱包 `createPrize` 的入参） |
 | 解析 | `parse(payload) → TradeIntent`；不认识的 p/op 抛 `UnknownPayloadError`，字段不合法抛 `InvalidPayloadError` |
 
 `TradeIntent` 是钱包审批窗的显示模型：只由上链字段 + 协议公式得出（花什么、多少、至少收到多少、手续费）。swap 的报价 `amt1`（v2 不上链，v1 上链但链上不按它执行）只作为参考值 `quotedOut`，费用一律按公式重算、不读 payload。钱包拿 `TradeIntent` 加上自己取的池子储备跑 `checkMinOut` / `quoteExactIn`，就能独立判断最少收到是否合理。
@@ -46,22 +46,28 @@ parse(payload)
 
 ## 狗狗大逃杀（`dogeuni-dex-sdk/royale`）
 
-DogeUni Wow 的 WDOGE 链上小游戏「狗狗大逃杀」的判定引擎与规则参数，单独放在子路径，不进主入口。游戏没有后端：报名 = 向奖池地址转 WDOGE，名次、奖金与退款只由奖池地址的入账 / 出账转账和开奖块哈希按规则推出。网页展示与奖池结算方共用这一份实现，任何人拿同样的链上数据都能复算出同样的结果。
+DogeUni Wow 的 WDOGE 链上小游戏「狗狗大逃杀」的判定引擎与规则参数，单独放在子路径，不进主入口。游戏没有后端：第 1–2 季报名 = 向奖池地址转 WDOGE；第 3 季起报名 = 对 prize-v1 奖池 deposit，奖金与退款由结算方按台账公布累计可领额、用户自己 claim。名次、奖金与退款只由奖池的入账 / 出账和开奖块哈希按规则推出。网页展示与奖池结算方共用这一份实现，任何人拿同样的链上数据都能复算出同样的结果。
 
 | 内容 | 说明 |
 |---|---|
-| `series(first, data, { versions, seasons })` | 从第 1 场起逐场推演到当前高度：每场的报名、名单、每轮淘汰、奖金 / 退款，以及按地址的台账（`ledger`：应得 `earned`、未压满确认块的 `pending`、已转出 `claimed`、可领 `claimable`）。缺开奖块哈希时返回 `needHash`，调用方补上后再调用。场数不设默认上限（每场截止严格递增，自然停在当前场）；`maxSessions` 是调用方自选的保险，走满了仍没到当前场即抛错，不返回半截结果 |
+| `series(first, data, { versions, seasons })` | 从第 1 场起逐场推演到当前高度：每场的报名、名单、每轮淘汰、奖金 / 退款，以及按地址的台账（`ledger`：应得 `earned`、未压满确认块的 `pending`、已转出 `claimed`、可领 `claimable`）。缺开奖块哈希时返回 `needHash`，调用方补上后再调用。场数不设默认上限（每场截止严格递增，自然停在当前场），推演量随场数线性增长；`maxSessions` 是调用方自选的保险，走满了仍没到当前场即抛错，不返回半截结果。补上 `needHash` 后可传 `resume: 上一次的结果` 从停下的那场接着推（data 只能多了哈希，别的不变）。已结束场次的 `txs` 里迟到门票（`next`）只列到下一场截止为止 |
 | `derive` / `decode` / `planRound` / `nextCutoff` | 单场推演、按金额识别一笔入池转账、单轮开奖、下一场截止高度 |
 | `royaleMoves` / `walletAmount` / `ticketAmount` | 某地址此刻按规则能转的单与金额 |
-| `ROYALE_POOL` / `ROYALE_TICK` / `ROYALE_FIRST` / `ROYALE_RULES` / `ROYALE_SEASONS` | 奖池地址、代币、第 1 场、按场次生效的规则版本表、换季表 |
+| `ROYALE_POOL` / `ROYALE_TICK` / `ROYALE_FIRST` / `ROYALE_RULES` / `ROYALE_SEASONS` | 第 1–2 季（转账奖池）的奖池地址、代币、第 1 场、按场次生效的规则版本表、换季表 |
+| `ROYALE_PRIZE_SEASON` / `ROYALE_PRIZE_POOL_ID` / `ROYALE_PRIZE_RESERVE` | 第 3 季（prize-v1 奖池）：池 id、第 1 场截止 / 起点、规则版本表、终局后的确认深度；储备地址只由节点记账，直接转进去的 WDOGE 取不出来 |
+| `royalePrizeFirst` / `royalePrizeInbound` / `royalePrizeMemo` / `checkPrizeSeason` | prize 赛季的第 1 场参数、存入（`/v5/prize/deposits`）→ 入池转账映射（跳过已退回的）、门票 memo `royale:<季>:<场>`、赛季参数校验 |
 
 规则版本表与换季表**只追加**：已有条目改一个数，旧场次的复算结果就会变。规则变化都在表尾追加新版本，引擎按 `cfg.version` 分支。
 
 ```js
-import { series, ROYALE_FIRST, ROYALE_RULES, ROYALE_SEASONS } from 'dogeuni-dex-sdk/royale'
+import { series, ROYALE_FIRST, ROYALE_RULES, ROYALE_SEASONS, ROYALE_PRIZE_SEASON, royalePrizeFirst, royalePrizeInbound } from 'dogeuni-dex-sdk/royale'
 
 // inbound / outbound：奖池的 WDOGE 转账 { tx, from, to, amt: BigInt 最小单位, h: 区块高度, ok: 链上执行成功 }
 const r = series(ROYALE_FIRST, { tip, inbound, outbound, hashes }, { versions: ROYALE_RULES, seasons: ROYALE_SEASONS })
+
+// 第 3 季：deposits 来自 /v5/prize/deposits；firstSeason 只改赛季标注
+const s = ROYALE_PRIZE_SEASON
+const p = series(royalePrizeFirst(s), { tip, inbound: royalePrizeInbound(s.poolId, deposits), outbound: [], hashes }, { versions: s.versions, firstSeason: s.season })
 ```
 
 ## 审批对照向量

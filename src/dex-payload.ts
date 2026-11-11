@@ -196,3 +196,49 @@ export function buildCreatePool(input: { tick0: string; tick1: string; amt0: str
   const amt1 = positiveIntString(input.amt1, 'amt1')
   return { op: 'create', p: 'pair-v1', tick0: input.tick0, tick1: input.tick1, amt0, amt1, amt0_min: amt0, amt1_min: amt1, doge: input.doge }
 }
+
+// ---------- prize-v1（奖池）----------
+// 钱包 createPrize 把 item 原样（p 在前）序列化成铭文，按节点的格式规则校验后才签名，不丢字段、不换算。
+
+const PRIZE_POOL_ID_RE = /^[0-9a-f]{64}$/
+/** 节点的 memo 规则：≤ 64 个可打印 ASCII 字符（0x20–0x7E） */
+export const PRIZE_MAX_MEMO = 64
+
+/** prize-v1 deposit：把 amt（池子 tick 的最小单位）存进奖池。上链：p, op, pool_id, amt, memo（有才写） */
+export interface PrizeDepositPayload {
+  p: 'prize-v1'
+  op: 'deposit'
+  pool_id: string
+  amt: string
+  memo?: string
+}
+
+/** prize-v1 claim：领取结算方公布给当前地址的全部可领额。上链：p, op, pool_id */
+export interface PrizeClaimPayload {
+  p: 'prize-v1'
+  op: 'claim'
+  pool_id: string
+}
+
+function prizePoolId(poolId: string): string {
+  if (!PRIZE_POOL_ID_RE.test(poolId)) throw new Error(`prize pool_id must be 64 lowercase hex: ${poolId}`)
+  return poolId
+}
+
+export function buildPrizeDeposit(input: { poolId: string; amt: string; memo?: string }): PrizeDepositPayload {
+  const pool_id = prizePoolId(input.poolId)
+  // 节点要求规范整数串（无前导 0）
+  if (!/^[1-9][0-9]*$/.test(input.amt)) throw new Error(`prize deposit amt must be a positive canonical integer: ${input.amt}`)
+  const out: PrizeDepositPayload = { p: 'prize-v1', op: 'deposit', pool_id, amt: input.amt }
+  if (input.memo !== undefined) {
+    if (input.memo.length > PRIZE_MAX_MEMO || !/^[\x20-\x7e]*$/.test(input.memo)) {
+      throw new Error(`prize memo must be at most ${PRIZE_MAX_MEMO} printable ASCII characters`)
+    }
+    out.memo = input.memo
+  }
+  return out
+}
+
+export function buildPrizeClaim(input: { poolId: string }): PrizeClaimPayload {
+  return { p: 'prize-v1', op: 'claim', pool_id: prizePoolId(input.poolId) }
+}

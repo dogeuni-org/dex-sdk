@@ -7,6 +7,7 @@
 // 奖池地址 / 起始场 / 发送方名单不属于规则版本，改它们等于另起一套「新的第 1 场」。
 // 场次从 1 重新数而账要接着算时用换季（ROYALE_SEASONS，只追加）：上一季到某场为止，新一季带自己的规则表从第 1 场起。
 import type { RoyaleConfig, RoyaleRuleVersion, RoyaleSeasonBreak } from './engine.ts'
+import type { RoyalePrizeSeason } from './prize.ts'
 
 /** 奖池地址：门票 / 动作的 WDOGE 转到这里，奖金与退款从这里领取 / 转出 */
 export const ROYALE_POOL = 'DS91v11ASuZmQL3Yu6NqDeDXp9rQuc19T3'
@@ -97,3 +98,25 @@ export const ROYALE_SINCE_HEIGHT = ROYALE_FIRST.ticketFrom
 export const ROYALE_SEASONS: readonly RoyaleSeasonBreak[] = [
   { afterSession: 9, cutoff: 6452100, versions: [{ fromSession: 1, rules: ROYALE_RULES[1].rules }] },
 ]
+
+/** prize-v1 奖池（2026-11-11 建池，高度 6452714；结算方 DHio9krmo5VLSjY6JbpRLaNfF9HS1XSNek）。WDOGE 只经 deposit 进池 */
+export const ROYALE_PRIZE_POOL_ID = '3c16dc89b63b6ff354b9e6d5265350da4547ed02d60e29f30efe14e08484db06'
+
+/** prize 池的储备地址：只由节点记账，直接往这里转 WDOGE 不算存入、永远取不出来 */
+export const ROYALE_PRIZE_RESERVE = 'AArHHsGFL2QNXA8NMsCPv5FhpEACMpAWpW'
+
+/**
+ * 第 3 季 = 第一个 prize 赛季（只追加；上线后一个数都别改）。门票改为对 prize 池 deposit（memo `royale:3:<场>`），
+ * 奖金 / 退款由结算方按台账公布累计可领额、用户自己 claim。与转账奖池的第 1–2 季是两套独立的推演
+ * （奖池、门票来源都不同，不接顺延奖池），所以不写进 ROYALE_SEASONS。
+ * 规则 = v2（只收整数门票、10 块一场、没有动作、没有保底）；confirmations 6：一场终局后压满 6 块才计入可领额。
+ */
+export const ROYALE_PRIZE_SEASON: RoyalePrizeSeason = {
+  season: 3,
+  poolId: ROYALE_PRIZE_POOL_ID,
+  cutoff: 6453030,
+  ticketFrom: 6453000,
+  actFrom: 6453000,
+  versions: [{ fromSession: 1, rules: ROYALE_RULES[1].rules }],
+  confirmations: 6,
+}
