@@ -52,6 +52,7 @@ DogeUni Wow 的 WDOGE 链上小游戏「狗狗大逃杀」的判定引擎与规�
 |---|---|
 | `series(first, data, { versions, seasons })` | 从第 1 场起逐场推演到当前高度：每场的报名、名单、每轮淘汰、奖金 / 退款，以及按地址的台账（`ledger`：应得 `earned`、未压满确认块的 `pending`、已转出 `claimed`、可领 `claimable`）。缺开奖块哈希时返回 `needHash`，调用方补上后再调用。场数不设默认上限（每场截止严格递增，自然停在当前场），推演量随场数线性增长；`maxSessions` 是调用方自选的保险，走满了仍没到当前场即抛错，不返回半截结果。补上 `needHash` 后可传 `resume: 上一次的结果` 从停下的那场接着推（data 只能多了哈希，别的不变）。已结束场次的 `txs` 里迟到门票（`next`）只列到下一场截止为止 |
 | `derive` / `decode` / `planRound` / `nextCutoff` | 单场推演、按金额识别一笔入池转账、单轮开奖、下一场截止高度 |
+| `royaleDrawTrace` / `royaleAliveBefore` | 单轮开奖的逐步过程（v2 起：哈希前 8 位 → 种子 → 每一抽的随机数、剩余狗号与出局狗号，与 `planRound` 同一份抽取代码）、某轮开奖前还活着的狗号；用于公示「这个哈希如何推出结果」，v1 带事件加权时返回 null |
 | `royaleMoves` / `walletAmount` / `ticketAmount` | 某地址此刻按规则能转的单与金额 |
 | `ROYALE_POOL` / `ROYALE_TICK` / `ROYALE_FIRST` / `ROYALE_RULES` / `ROYALE_SEASONS` | 第 1–2 季（转账奖池）的奖池地址、代币、第 1 场、按场次生效的规则版本表、换季表 |
 | `ROYALE_PRIZE_SEASON` / `ROYALE_PRIZE_POOL_ID` / `ROYALE_PRIZE_RESERVE` | 第 3 季（prize-v1 奖池）：池 id、第 1 场截止 / 起点、规则版本表、终局后的确认深度；储备地址只由节点记账，直接转进去的 WDOGE 取不出来 |

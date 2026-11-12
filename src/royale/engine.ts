@@ -291,20 +291,68 @@ export interface RoyaleRoundPlan {
   lucky: RoyaleDog[]
 }
 
+/** 一轮抽签的一步：从 pool（剩下的活狗号，升序）里取第 index 只（0 起）= no 号出局；index = floor(r × pool.length) */
+export interface RoyaleDrawStep {
+  pool: number[]
+  r: number
+  index: number
+  no: number
+}
+
+/** 一轮抽签的全过程（v2 起、没有动作的规则）：种子、本轮淘汰只数与逐步结果，供页面展示 / 任何人复算 */
+export interface RoyaleDrawTrace {
+  /** 开奖块哈希前 8 位（十六进制） */
+  seedHex: string
+  /** 种子 = seedHex 按十六进制读成的整数 */
+  seed: number
+  /** 本轮淘汰只数 = round(活狗数 × killRate)，至少 1、至少留 1 */
+  n: number
+  steps: RoyaleDrawStep[]
+}
+
+// v2 抽签：种子 = 哈希前 8 位，随机数按 rngFrom（mulberry32）依次生成；活狗按狗号升序，每步取 floor(r × 剩余只数)
+function drawSteps(hash: string, aliveNos: number[], killRate: number): RoyaleDrawStep[] {
+  const r = rngFrom(parseInt(hash.slice(0, 8), 16))
+  const n = Math.min(Math.max(1, Math.round(aliveNos.length * killRate)), aliveNos.length - 1)
+  const pool = aliveNos.slice()
+  const steps: RoyaleDrawStep[] = []
+  for (let i = 0; i < n; i++) {
+    const before = pool.slice()
+    const x = r()
+    const index = Math.floor(x * pool.length)
+    steps.push({ pool: before, r: x, index, no: pool.splice(index, 1)[0] })
+  }
+  return steps
+}
+
+/**
+ * 一轮抽签的过程（与 planRound 同一段代码，展示出来的就是结算用的）。aliveNos = 开奖前的活狗号（引擎里按狗号升序）。
+ * 有动作的规则（v1：加权、随机事件、带走）不提供，返回 null。
+ */
+export function royaleDrawTrace(hash: string, aliveNos: readonly number[], cfg: Pick<RoyaleConfig, 'version' | 'killRate'>): RoyaleDrawTrace | null {
+  if (royaleHasActions(cfg) || aliveNos.length < 2) return null
+  const nos = aliveNos.slice().sort((a, b) => a - b)
+  const steps = drawSteps(hash, nos, cfg.killRate)
+  return { seedHex: hash.slice(0, 8), seed: parseInt(hash.slice(0, 8), 16), n: steps.length, steps }
+}
+
+/** 第 round 轮开奖前的活狗号（升序）：之前各轮没出局的。只对没有动作（不会爬回来）的规则成立，有动作返回 null */
+export function royaleAliveBefore(out: Pick<RoyaleOutcome, 'dogs'>, round: number, cfg: Pick<RoyaleConfig, 'version'>): number[] | null {
+  if (royaleHasActions(cfg)) return null
+  return out.dogs.filter((d) => d.outRound === 0 || d.outRound >= round).map((d) => d.no).sort((a, b) => a - b)
+}
+
 /**
  * 一轮的抽签：种子 = 开奖块哈希前 8 位（十六进制）。
  * v2：从活狗里等概率抽 n = round(活狗数 × killRate) 只（至少 1、至少留 1），没有事件 / 带走 / 盾。
  * v1：见下方原实现（按被砸次数加权、随机事件、带走），逐行别改。
  */
 export function planRound(hash: string, round: number, alive: RoyaleDog[], cfg: Pick<RoyaleConfig, 'version' | 'killRate'>): RoyaleRoundPlan {
-  const r = rngFrom(parseInt(hash.slice(0, 8), 16))
   if (!royaleHasActions(cfg)) {
-    const n = Math.min(Math.max(1, Math.round(alive.length * cfg.killRate)), alive.length - 1)
-    const pool = alive.slice()
-    const results: RoyaleRoundPlan['results'] = []
-    for (let i = 0; i < n; i++) results.push({ v: pool.splice(Math.floor(r() * pool.length), 1)[0], killer: null, line: 0 })
-    return { event: null, results, lucky: [] }
+    const steps = drawSteps(hash, alive.map((d) => d.no), cfg.killRate)
+    return { event: null, results: steps.map((s) => ({ v: alive.find((d) => d.no === s.no) as RoyaleDog, killer: null, line: 0 })), lucky: [] }
   }
+  const r = rngFrom(parseInt(hash.slice(0, 8), 16))
   const killRate = cfg.killRate
   let event: RoyaleEvent | null = null
   if (round >= 2 && alive.length > 3 && r() < 0.24) event = pick<RoyaleEvent>(['drop', 'rain', 'calm', 'double'], r)

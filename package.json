@@ -1,6 +1,6 @@
 {
   "name": "dogeuni-dex-sdk",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "DogeUni DEX 协议纯函数：报价、payload 构造与解析、费用与金额换算（与 dogeuni-indexer 逐位一致，零依赖）",
   "license": "MIT",
   "repository": {

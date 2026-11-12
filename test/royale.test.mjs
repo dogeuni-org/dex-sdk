@@ -4,7 +4,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
   derive, series, decode, walletAmount, ticketAmount, toUnits, fromUnits, nextCutoff, royaleMoves, checkRuleVersions, rulesAt,
-  planRound, royaleHasActions,
+  planRound, royaleHasActions, royaleDrawTrace, royaleAliveBefore,
 } from '../src/royale/engine.ts'
 import { createHash } from 'node:crypto'
 import { ROYALE_FIRST, ROYALE_RULES } from '../src/royale/config.ts'
@@ -359,6 +359,43 @@ test('v2 planRound：等概率（不看被砸 / 带走），至少出局 1 只�
   // 同一哈希同一结果
   const h = 'deadbeef' + 'ab'.repeat(28)
   assert.deepEqual(planRound(h, 2, alive, cfg2).results.map((x) => x.v.no), planRound(h, 2, alive, cfg2).results.map((x) => x.v.no))
+})
+
+test('v2 royaleDrawTrace：逐步过程与 planRound / 引擎出局结果一致，可按 mulberry32 独立复算', () => {
+  // 独立实现一遍（不经引擎）：种子 = 前 8 位，mulberry32，活狗升序、每步取 floor(r × 剩余)
+  const mulberry = (seed) => () => {
+    seed = (seed + 0x6d2b79f5) | 0
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+  const dog = (no) => ({ no, addr: 'D' + no, alive: true, shield: 0, heat: 0, kills: 0, killer: null, outRound: 0, revived: false })
+  for (let i = 0; i < 2000; i++) {
+    const hash = createHash('sha256').update('t' + i).digest('hex')
+    const nos = Array.from({ length: 2 + (i % 12) }, (_, k) => k + 1)
+    const tr = royaleDrawTrace(hash, nos, cfg2)
+    const r = mulberry(parseInt(hash.slice(0, 8), 16))
+    const pool = nos.slice()
+    const want = []
+    for (let k = 0; k < tr.n; k++) want.push(pool.splice(Math.floor(r() * pool.length), 1)[0])
+    assert.equal(tr.seed, parseInt(hash.slice(0, 8), 16))
+    assert.equal(tr.seedHex, hash.slice(0, 8))
+    assert.deepEqual(tr.steps.map((s) => s.no), want)
+    assert.ok(tr.steps.every((s) => s.index === Math.floor(s.r * s.pool.length) && s.pool[s.index] === s.no))
+    assert.deepEqual(planRound(hash, 1, nos.map(dog), cfg2).results.map((x) => x.v.no), want)
+  }
+  // 引擎推出的每一轮：开奖前活狗 + 哈希 → 过程里的出局号 = 这一轮的 kills
+  const inb = [tx(A, '1', 95), tx(B, '1', 99), tx(C3, '1', 100)]
+  const o = derive(cfg2, { tip: 400, inbound: inb, outbound: [], hashes })
+  assert.ok(o.rounds.length > 0)
+  for (const rd of o.rounds) {
+    const tr = royaleDrawTrace(rd.hash, royaleAliveBefore(o, rd.round, cfg2), cfg2)
+    assert.deepEqual(tr.steps.map((s) => s.no), rd.kills.map((k) => k.no))
+  }
+  // v1 有动作：不提供
+  assert.equal(royaleDrawTrace('deadbeef', [1, 2, 3], cfg), null)
+  assert.equal(royaleAliveBefore(o, 1, cfg), null)
+  assert.equal(royaleDrawTrace('deadbeef', [1], cfg2), null)
 })
 
 test('v2 royaleMoves：报名照常给门票，开打后什么都不给', () => {
