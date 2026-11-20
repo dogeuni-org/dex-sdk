@@ -64,13 +64,13 @@ test('往返 add / remove / create：nativeDoge 只在池子含 WDOGE 时成立'
 })
 
 test('往返 pump trade：买入原生 DOGE 支付带平台费 / 充值费，卖出平台费取决于储备', () => {
-  assert.deepEqual(parse(buildPumpTrade('buy', PUMP, '20')), {
+  assert.deepEqual(parse(buildPumpTrade('buy', PUMP, '20', '521915358633021')), {
     kind: 'pump-trade', side: 'buy', tickId: PUMP, amountIn: '2000000000', nativeIn: true,
-    minOut: '0', platformFee: '20000000', tipFee: '10000000', serviceFee: '50000000',
+    minOut: '521915358633021', platformFee: '20000000', tipFee: '10000000', serviceFee: '50000000',
   })
-  assert.deepEqual(parse(buildPumpTrade('sell', PUMP, '5245380.48877409')), {
+  assert.deepEqual(parse(buildPumpTrade('sell', PUMP, '5245380.48877409', '1950399000')), {
     kind: 'pump-trade', side: 'sell', tickId: PUMP, amountIn: '524538048877409', nativeIn: false,
-    minOut: '0', platformFee: null, tipFee: '10000000', serviceFee: '0',
+    minOut: '1950399000', platformFee: null, tipFee: '10000000', serviceFee: '0',
   })
   const bad = { ...buildPumpTrade('sell', PUMP, '1'), tick0_id: ID }
   assert.throws(() => parse(bad), /tick0_id/)

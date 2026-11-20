@@ -53,17 +53,28 @@ test('进度：真实 WDOGE = amt1 − 3000 DOGE，向下取整、封顶 100', (
   assert.equal(pumpProgressPercent('99999999999999999'), '100.0')
 })
 
-test('isPumpTradingOpen: indexer 按成交前 amt1（含虚拟储备）≥ 33,000 DOGE 停止交易', () => {
-  assert.equal(isPumpTradingOpen('3299999999999'), true)
-  assert.equal(isPumpTradingOpen('3300000000000'), false)
+test('isPumpTradingOpen: 节点按成交前 amt1（含虚拟储备）≥ 103,000 DOGE 停止买卖', () => {
+  assert.equal(isPumpTradingOpen('3300000000000'), true)
+  assert.equal(isPumpTradingOpen('10299999999999'), true)
   assert.equal(isPumpTradingOpen('10300000000000'), false)
+  assert.equal(isPumpTradingOpen('10300000000001'), false)
 })
 
-test('isPumpStuck: 停止交易且真实 WDOGE 不到 100,000 DOGE（amt1 ∈ [33,000, 103,000)）', () => {
-  assert.equal(isPumpStuck('3299999999999'), false)
-  assert.equal(isPumpStuck('3300000000000'), true)
-  assert.equal(isPumpStuck('10299999999999'), true)
-  assert.equal(isPumpStuck('10300000000000'), false) // 毕业
+test('阈值以下可买到恰好达线、跨线，或卖回曲线；旧版卡住区间已消失', () => {
+  const reserves = { ...initialPumpReserves(), amt1: '10299999999802' }
+  assert.equal(isPumpTradingOpen(reserves.amt1), true)
+  const exact = quotePumpBuy(reserves, '200')
+  assert.equal(exact.reserves.amt1, '10300000000000')
+  assert.equal(isPumpTradingOpen(exact.reserves.amt1), false)
+  const cross = quotePumpBuy(reserves, '201')
+  assert.equal(cross.reserves.amt1, '10300000000001')
+  assert.equal(isPumpTradingOpen(cross.reserves.amt1), false)
+  const sell = quotePumpSell(reserves, '100000000')
+  assert.equal(isPumpSellCovered(reserves.amt1, sell), true)
+  assert.equal(isPumpTradingOpen(sell.reserves.amt1), true)
+  for (const amt1 of ['3300000000000', reserves.amt1, exact.reserves.amt1, cross.reserves.amt1]) {
+    assert.equal(isPumpStuck(amt1), false)
+  }
 })
 
 test('isPumpFeePayable: 平台费 ≥ 2 sats（含邀请人分成 floor(fee ÷ 2) ≥ 1）', () => {

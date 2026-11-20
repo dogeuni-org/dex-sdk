@@ -8,7 +8,7 @@ import { quoteExactIn, checkMinOut } from '../src/swap.ts'
 import { proportionalBaseUnits } from '../src/liquidity.ts'
 import { liquidityMin } from '../src/slippage.ts'
 import { lpPooledAmounts } from '../src/lp-position.ts'
-import { quotePumpBuy, quotePumpSell, isPumpSellCovered, isPumpTradingOpen, isPumpFeePayable, pumpRealWdoge } from '../src/pump-curve.ts'
+import { quotePumpBuy, quotePumpSell, isPumpSellCovered, isPumpFeePayable, pumpRealWdoge } from '../src/pump-curve.ts'
 
 const data = JSON.parse(readFileSync(new URL('./vectors/indexer-golden.json', import.meta.url), 'utf8'))
 const ZERO = BigInt(0)
@@ -66,7 +66,7 @@ test('remove：lpPooledAmounts = 链上提取量；任一侧为 0 链上失败',
   }
 })
 
-test('pump：quotePumpBuy / quotePumpSell = 链上平台费 / 输出 / 成交后储备；失败条件（含停止交易线）与链上一致', () => {
+test('pump：用升级前的链上样本核对报价、费用、储备及历史成交结果', () => {
   for (const c of data.pump) {
     const name = label(c, ['side', 'invited', 'reserves', 'amtIn'])
     const q = c.side === 'buy' ? quotePumpBuy(c.reserves, c.amtIn) : quotePumpSell(c.reserves, c.amtIn)
@@ -76,7 +76,9 @@ test('pump：quotePumpBuy / quotePumpSell = 链上平台费 / 输出 / 成交后
     // isPumpFeePayable 按 2 要求：不论有没有邀请人，它放行的都能成交
     if (isPumpFeePayable(q)) assert.ok(feeOk, name)
     const covered = c.side === 'buy' || isPumpSellCovered(c.reserves.amt1, q)
-    assert.equal(c.ok, isPumpTradingOpen(c.reserves.amt1) && feeOk && BigInt(q.amountOut) > ZERO && covered, name)
+    // 样本由 FixHeight 之前的 indexer 生成，保留当时的停止线。
+    const legacyTradingOpen = BigInt(c.reserves.amt1) < 3300000000000n
+    assert.equal(c.ok, legacyTradingOpen && feeOk && BigInt(q.amountOut) > ZERO && covered, name)
     if (!c.ok) continue
     assert.equal(q.fee, c.fee, name)
     assert.equal(q.amountOut, c.amtOut, name)

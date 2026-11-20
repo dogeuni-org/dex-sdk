@@ -108,7 +108,7 @@ export interface PumpTradeIntent {
   amountIn: string
   /** 买入且 doge = 1：用原生 DOGE 支付，钱包先充值成 WDOGE 并另收 serviceFee */
   nativeIn: boolean
-  /** payload 的 amt1_min。indexer 不校验 pump 的最少收到，任何值都没有滑点保护，别显示成「最少收到」 */
+  /** payload 的 amt1_min。FixHeight 起，节点用扣除平台费后的实际输出校验。 */
   minOut: string
   /** 平台费 1%（WDOGE）：买入 = floor(amountIn ÷ 100)；卖出从所得里扣，取决于成交时储备，这里为 null（用 quotePumpSell 算） */
   platformFee: string | null

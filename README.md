@@ -44,6 +44,8 @@ parse(payload)
 // { kind: 'swap', protocol: 'pair-v1', amountIn: '1000000000', nativeIn: true, minOut: '12283950506', lpFee: '3000000', serviceFee: '50000000', ... }
 ```
 
+Pump 自 `0.4.4` 起按 DogeUni Node 现行规则判定停盘。成交前实际 DOGE 储备达到 100,000 DOGE 时停盘。`buildPumpTrade` 的第四个参数接收扣费后最低实收量，单位为链上最小单位，写入 `amt1_min`，并由 `parse` 解码为 `minOut`。
+
 ## 狗狗大逃杀（`dogeuni-dex-sdk/royale`）
 
 DogeUni Wow 的 WDOGE 链上小游戏「狗狗大逃杀」的判定引擎与规则参数，单独放在子路径，不进主入口。游戏没有后端：第 1–2 季报名 = 向奖池地址转 WDOGE；第 3 季起报名 = 对 prize-v1 奖池 deposit，奖金与退款由结算方按台账公布累计可领额、用户自己 claim。名次、奖金与退款只由奖池的入账 / 出账和开奖块哈希按规则推出。网页展示与奖池结算方共用这一份实现，任何人拿同样的链上数据都能复算出同样的结果。

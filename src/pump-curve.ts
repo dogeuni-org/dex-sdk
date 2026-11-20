@@ -1,4 +1,4 @@
-// Pump（meme20 曲线发币）协议常量与报价——与 dogeuni-indexer 逐位一致（storage/pump.go、explorer/pump.go、explorer/verifys.go），
+// Pump（meme20 曲线发币）协议常量与报价——与 DogeUni Node 逐位一致（storage/pump.go、explorer/pump.go、explorer/verifys.go），
 // 金额一律链上最小单位整数串，内部用 BigInt，别经 Number。
 import { WALLET_NETWORK_OVERHEAD_SATS, depositTotalSpendSats } from './wdoge-fees.ts'
 
@@ -11,11 +11,8 @@ export const PUMP_TOTAL_SUPPLY = '100000000000000000'
 export const PUMP_VIRTUAL_WDOGE = '300000000000'
 /** 真实 WDOGE ≥ 100,000 DOGE 毕业（storage/pump.go 的 DogeMax） */
 export const PUMP_GRADUATION_WDOGE = '10000000000000'
-/**
- * 成交前 amt1（含虚拟储备）≥ 33,000 DOGE 即拒绝 trade，买卖都拒（explorer/verifys.go 的 DogeMax，与 storage 的同名常量不是一个值）。
- * 毕业线 2025-04 从真实 30,000 提到 100,000 时这条没跟着改，所以 amt1 落在 [33,000, 103,000) 的曲线既不能交易也不毕业
- */
-export const PUMP_TRADE_STOP_AMT1 = '3300000000000'
+/** FixHeight 起，成交前 amt1（含虚拟储备）达到 103,000 DOGE 即拒绝买卖。 */
+export const PUMP_TRADE_STOP_AMT1 = (BigInt(PUMP_VIRTUAL_WDOGE) + BigInt(PUMP_GRADUATION_WDOGE)).toString()
 /**
  * 平台费单独转账，为 0 时整笔失败；交易者绑定了邀请人时还要再转 floor(平台费 ÷ 2) 给邀请人，也不能为 0。
  * 按 2 要求即两种情况都成交（只挡掉 < 200 sats 的尘埃交易）
@@ -118,12 +115,12 @@ export function pumpProgressPercent(amt1: string): string {
   return `${s.slice(0, -1) || '0'}.${s.slice(-1)}`
 }
 
-/** 曲线还能不能交易：成交前 amt1（含虚拟储备）< 33,000 DOGE（PUMP_TRADE_STOP_AMT1） */
+/** 按节点当前规则，成交前 amt1 低于停止线即可交易，包括成交后达到或超过毕业线的买入。 */
 export function isPumpTradingOpen(amt1: string): boolean {
   return big(amt1) < big(PUMP_TRADE_STOP_AMT1)
 }
 
-/** 成交后的 amt1 会让曲线卡住：停止交易但没到毕业线（真实 WDOGE < 100,000 DOGE），之后谁也不能再交易 */
+/** @deprecated 当前停止线与毕业线对齐，旧版的停止交易但未达到毕业线区间已消失。 */
 export function isPumpStuck(amt1: string): boolean {
   return !isPumpTradingOpen(amt1) && big(pumpRealWdoge(amt1)) < big(PUMP_GRADUATION_WDOGE)
 }
